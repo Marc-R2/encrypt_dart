@@ -1,6 +1,9 @@
-import 'package:encrypt_dart/encrypt_dart.dart';
+import 'package:encrypt_dart/encrypt.dart';
 
 void main() {
-  var awesome = Awesome();
-  print('awesome: ${awesome.isAwesome}');
+  final encrypted = Encrypt.encrypt(data: 'This is a test message');
+  print(encrypted);
+
+  final decrypted = Encrypt.decrypt(data: encrypted!);
+  print(decrypted);
 }

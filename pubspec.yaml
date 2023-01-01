@@ -4,11 +4,15 @@ version: 1.0.0
 # repository: https://github.com/my_org/my_repo
 
 environment:
-  sdk: '>=2.19.0-444.1.beta <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
 
-# dependencies:
-#   path: ^1.8.0
+dependencies:
+  encrypt: ^5.0.1
+  log_message:
+    git:
+      url: https://github.com/Marc-R2/logger_dart.git
 
 dev_dependencies:
-  lints: ^2.0.0
-  test: ^1.21.0
+  # lints: ^2.0.0
+  test: ^1.22.1
+  very_good_analysis: 3.1.0
