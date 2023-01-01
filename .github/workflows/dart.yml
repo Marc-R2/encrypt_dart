@@ -41,5 +41,5 @@ jobs:
           # Divide the tests into steps, with each step running the tests for a single file
           for test in $tests; do
             echo "Running tests in $test"
-            pub run test $test
+            dart pub run test $test
           done
