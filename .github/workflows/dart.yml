@@ -43,4 +43,4 @@ jobs:
       - name: Run tests
         run: dart pub run test ${{ steps.test_files.outputs.tests }}
         shell: bash
-        loop: ${{ steps.test_files.outputs.tests.split() }}
+        # loop: ${{ steps.test_files.outputs.tests.split() }}
