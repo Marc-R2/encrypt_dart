@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:encrypt_dart/encrypt.dart';
+import 'package:crypt/encrypt.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -56,7 +56,8 @@ void main() {
       expect(decrypted, messageSpec);
     });
 
-    test('should correctly encrypt and decrypt message with different key pair', () {
+    test('should correctly encrypt and decrypt message with different key pair',
+        () {
       final decryptor1 = RSADecryptor();
       final decryptor2 = RSADecryptor();
 
@@ -100,34 +101,45 @@ void main() {
 
     test('should correctly encrypt and decrypt message with spaces', () {
       final decryptor = RSADecryptor();
-      final message = 'This is a test message with spaces';
+      const message = 'This is a test message with spaces';
       final encrypted = decryptor.encrypt(message);
       final decrypted = decryptor.decrypt(encrypted!);
       expect(decrypted, message);
     });
 
-    test('should correctly encrypt and decrypt message with leading and trailing whitespace', () {
-      final decryptor = RSADecryptor();
-      final message = '  This is a test message with leading and trailing whitespace   ';
-      final encrypted = decryptor.encrypt(message);
-      final decrypted = decryptor.decrypt(encrypted!);
-      expect(decrypted, message);
-    });
+    test(
+      'should correctly encrypt and decrypt message with '
+      'leading and trailing whitespace',
+      () {
+        final decryptor = RSADecryptor();
+        const message = '  This is a test message with '
+            'leading and trailing whitespace   ';
+        final encrypted = decryptor.encrypt(message);
+        final decrypted = decryptor.decrypt(encrypted!);
+        expect(decrypted, message);
+      },
+    );
 
-    test('should return null on decrypting message encrypted with different key', () {
-      final decryptor = RSADecryptor();
-      final encryptor = RSADecryptor();
-      final encrypted = encryptor.encrypt(message);
-      final decrypted = decryptor.decrypt(encrypted!);
-      expect(decrypted, isNull);
-    });
+    test(
+      'should return null on decrypting message encrypted with different key',
+      () {
+        final decryptor = RSADecryptor();
+        final encryptor = RSADecryptor();
+        final encrypted = encryptor.encrypt(message);
+        final decrypted = decryptor.decrypt(encrypted!);
+        expect(decrypted, isNull);
+      },
+    );
 
-    test('should return null on decrypting message encrypted with different algorithm', () {
-      final decryptor = RSADecryptor();
-      final encrypted = 'This is not a valid encrypted message';
-      final decrypted = decryptor.decrypt(encrypted);
-      expect(decrypted, isNull);
-    });
-
+    test(
+      'should return null on decrypting message '
+      'encrypted with different algorithm',
+      () {
+        final decryptor = RSADecryptor();
+        const encrypted = 'This is not a valid encrypted message';
+        final decrypted = decryptor.decrypt(encrypted);
+        expect(decrypted, isNull);
+      },
+    );
   });
 }

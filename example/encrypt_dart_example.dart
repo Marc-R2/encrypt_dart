@@ -1,4 +1,4 @@
-import 'package:encrypt_dart/encrypt.dart';
+import 'package:crypt/encrypt.dart';
 
 void main() {
   final encrypted = Encrypt.encrypt(data: 'This is a test message');

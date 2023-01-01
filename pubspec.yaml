@@ -1,4 +1,4 @@
-name: encrypt
+name: crypt
 description: A starting point for Dart libraries or applications.
 version: 0.0.1
 # repository: https://github.com/my_org/my_repo
@@ -9,10 +9,12 @@ environment:
   sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
+  crypto: ^3.0.2
   encrypt: ^5.0.1
   log_message:
     git:
       url: https://github.com/Marc-R2/logger_dart.git
+  pointycastle: 3.6.2
 
 dev_dependencies:
   mutation_test: ^1.3.2

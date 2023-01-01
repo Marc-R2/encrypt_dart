@@ -1,4 +1,4 @@
-import 'package:encrypt_dart/encrypt.dart';
+import 'package:crypt/encrypt.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -33,4 +33,3 @@ void main() {
     });
   });
 }
-

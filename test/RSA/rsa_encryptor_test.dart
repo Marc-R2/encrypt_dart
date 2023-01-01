@@ -1,12 +1,11 @@
 import 'dart:math';
 
-import 'package:encrypt_dart/encrypt.dart';
+import 'package:crypt/encrypt.dart';
 import 'package:pointycastle/asymmetric/api.dart';
 import 'package:test/test.dart';
 
 void main() {
   const message = 'This is a test message';
-  const invalidMessage = 'This is not a valid encrypted message';
   const messageSpec = r'This is a test message with special characters: &%$#@!';
 
   group('RSAEncryptor', () {
@@ -55,4 +54,3 @@ void main() {
     });
   });
 }
-

@@ -69,7 +69,8 @@ class RSAEncryptor with Logging {
       stringValues: Uint8List.fromList(publicKeySeq.encode()),
     );
 
-    // Create the top-level ASN1 sequence containing the algorithm identifier and public key
+    // Create the top-level ASN1 sequence containing the algorithm identifier
+    // and public key
     final topLevelSeq = ASN1Sequence()
       ..add(algorithmSeq)
       ..add(publicKeySeqBitString);

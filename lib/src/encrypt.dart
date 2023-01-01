@@ -112,7 +112,8 @@ class Encrypt with Logging {
     // Join the decrypted chunks into a single string
     final decrypted = decryptedChunks.join();
 
-    // Check if the hash value of the decrypted data matches the original hash value
+    // Check if the hash value of the decrypted data matches
+    // the original hash value
     if (blockHash(decryptedChunks) != hash) return null;
 
     // Return the decrypted data if the hash values match
