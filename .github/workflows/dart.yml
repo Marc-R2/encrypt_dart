@@ -33,13 +33,14 @@ jobs:
       - name: Analyze project source
         run: dart analyze
 
+      # Get a list of all test files
+      - name: Get test files
+        run: tests=$(find test -name "*_test.dart")
+        shell: bash
+        id: test_files
+
+        # Create a step for each test file
       - name: Run tests
-        run: |
-          # Get a list of all test files
-          tests=$(find test -name "*_test.dart")
-          
-          # Divide the tests into steps, with each step running the tests for a single file
-          for test in $tests; do
-            echo "Running tests in $test"
-            dart pub run test $test
-          done
+        run: dart pub run test ${{ steps.test_files.outputs.tests }}
+        shell: bash
+        loop: ${{ steps.test_files.outputs.tests.split() }}
