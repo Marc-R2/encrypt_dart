@@ -11,6 +11,8 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
+[![codecov](https://codecov.io/gh/Marc-R2/encrypt_dart/branch/master/graph/badge.svg?token=YPB1NXNT7U)](https://codecov.io/gh/Marc-R2/encrypt_dart)
+
 TODO: Put a short description of the package here that helps potential users
 know whether this package might be useful for them.
 

@@ -7,10 +7,10 @@ void main() {
   const message = 'This is a test message';
   const invalidMessage = 'This is not a valid encrypted message';
   const messageSpec = r'This is a test message with special characters: &%$#@!';
+  final decryptor = RSADecryptor();
 
   group('RSADecryptor', () {
     test('should correctly encrypt and decrypt message', () {
-      final decryptor = RSADecryptor();
       final encrypted = decryptor.encrypt(message);
       final decrypted = decryptor.decrypt(encrypted!);
       expect(decrypted, message);
@@ -23,13 +23,11 @@ void main() {
     });
 
     test('should generate new key pair on construction', () {
-      final decryptor = RSADecryptor();
       final decryptor2 = RSADecryptor();
       expect(decryptor.publicKeyString, isNot(decryptor2.publicKeyString));
     });
 
     test('should correctly decrypt message encrypted with public key', () {
-      final decryptor = RSADecryptor();
       final encryptor = RSAEncryptor(decryptor.publicKeyString);
 
       final encrypted = encryptor.encrypt(message);
@@ -39,7 +37,6 @@ void main() {
     });
 
     test('should correctly encrypt and decrypt long message', () {
-      final decryptor = RSADecryptor();
       final message = String.fromCharCodes(
         List.generate(200, (_) => Random().nextInt(128)),
       );
@@ -50,7 +47,6 @@ void main() {
     });
 
     test('should correctly encrypt and decrypt special characters', () {
-      final decryptor = RSADecryptor();
       final encrypted = decryptor.encrypt(messageSpec);
       final decrypted = decryptor.decrypt(encrypted!);
       expect(decrypted, messageSpec);
@@ -100,7 +96,6 @@ void main() {
     });
 
     test('should correctly encrypt and decrypt message with spaces', () {
-      final decryptor = RSADecryptor();
       const message = 'This is a test message with spaces';
       final encrypted = decryptor.encrypt(message);
       final decrypted = decryptor.decrypt(encrypted!);
@@ -111,7 +106,6 @@ void main() {
       'should correctly encrypt and decrypt message with '
       'leading and trailing whitespace',
       () {
-        final decryptor = RSADecryptor();
         const message = '  This is a test message with '
             'leading and trailing whitespace   ';
         final encrypted = decryptor.encrypt(message);
@@ -123,7 +117,6 @@ void main() {
     test(
       'should return null on decrypting message encrypted with different key',
       () {
-        final decryptor = RSADecryptor();
         final encryptor = RSADecryptor();
         final encrypted = encryptor.encrypt(message);
         final decrypted = decryptor.decrypt(encrypted!);
@@ -135,11 +128,15 @@ void main() {
       'should return null on decrypting message '
       'encrypted with different algorithm',
       () {
-        final decryptor = RSADecryptor();
         const encrypted = 'This is not a valid encrypted message';
         final decrypted = decryptor.decrypt(encrypted);
         expect(decrypted, isNull);
       },
     );
+
+    test('should use 2048-bit keys', () {
+      final keyLength = decryptor.publicKey.modulus?.bitLength;
+      expect(keyLength, 2048);
+    });
   });
 }
