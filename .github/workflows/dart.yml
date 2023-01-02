@@ -44,3 +44,14 @@ jobs:
         run: dart pub run test ${{ steps.test_files.outputs.tests }}
         shell: bash
         # loop: ${{ steps.test_files.outputs.tests.split() }}
+
+      - name: Coverage information
+        run: |
+          dart pub global activate coverage
+          dart pub global run coverage:test_with_coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
