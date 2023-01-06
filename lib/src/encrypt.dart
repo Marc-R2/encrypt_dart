@@ -14,6 +14,7 @@ class Encrypt with Logging {
   /// The maximum length of a single message that can be encrypted automatically
   static int get maxLen => rsa.maxLen; // min(rsa.maxLen, aes.maxLen);
 
+  /// PublicKey of the session
   static String get publicKey => rsa.publicKey;
 
   /// Encrypt given [data] using the

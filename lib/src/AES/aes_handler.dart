@@ -1,27 +1,21 @@
 part of '../../encrypt.dart';
 
 /// A class that contains all the methods to encrypt and decrypt data using RSA.
-class RSAEncryptionHandler with Logging {
-  /// The current session with the RSA key pair
-  late final session = RSADecryptor();
-
+class AESHandler with Logging {
   /// The maximum length of a single message that can be encrypted automatically
   int get maxLen => 200;
 
-  /// Get the public key of the session
-  String get publicKey => session.publicKeyString;
-
   /// All instances in memory
-  final Map<String, RSAEncryptor> _instances = {};
+  final Map<String, AESEncrypter> _instances = {};
 
-  /// Get the instance with the given [publicKey].
+  /// Get the instance with the given [aesKey].
   ///
-  /// If no instance with the given [publicKey] exists,
+  /// If no instance with the given [aesKey] exists,
   /// a new one will be created.
-  RSAEncryptor getInstance(String publicKey) {
-    if (_instances.containsKey(publicKey)) return _instances[publicKey]!;
-    final newInstance = RSAEncryptor(publicKey);
-    _instances[publicKey] = newInstance;
+  AESEncrypter getInstance(String aesKey) {
+    if (_instances.containsKey(aesKey)) return _instances[aesKey]!;
+    final newInstance = AESEncrypter(aesKey);
+    _instances[aesKey] ??= newInstance;
 
     cleanInstances();
 
@@ -38,17 +32,17 @@ class RSAEncryptionHandler with Logging {
         ..sort((a, b) => a.value.age.compareTo(b.value.age));
 
       final expiredInstances =
-      sortedInstances.where((element) => element.value.isExpired).toList();
+          sortedInstances.where((element) => element.value.isExpired).toList();
 
       final expiredCount = expiredInstances.length;
 
       if (expiredCount > targetCount) {
         expiredInstances.sublist(0, targetCount).forEach(
               (element) => _instances.remove(element.key),
-        );
+            );
 
         log.info(
-          title: 'Cleaned RSA instances',
+          title: 'Cleaned AES instances',
           message: 'Reduced from {len} to {current} with {expired} '
               'expired instances and {target} target count',
           values: {
@@ -66,12 +60,11 @@ class RSAEncryptionHandler with Logging {
   ///
   /// The maximum length of [data] is [maxLen].
   /// Everything longer will be truncated.
-  String? encrypt({required String data, String? publicKey}) {
+  String? encrypt({required String data, required String aesKey}) {
     final log = functionLog('encrypt');
     try {
       if (data.length > maxLen) return null;
-      if (publicKey == null) return session.encrypt(data);
-      return getInstance(publicKey).encrypt(data);
+      return getInstance(aesKey).encrypt(data);
     } catch (e, trace) {
       log.warn(title: 'Could not encrypt', message: '$e', trace: trace);
       return null;
@@ -80,5 +73,13 @@ class RSAEncryptionHandler with Logging {
 
   /// Decrypt given [data] using the RSA algorithm
   /// and the private key of the session.
-  String? decrypt({required String data}) => session.decrypt(data);
+  String? decrypt({required String data, required String aesKey}) {
+    final log = functionLog('encrypt');
+    try {
+      return getInstance(aesKey).decrypt(data);
+    } catch (e, trace) {
+      log.warn(title: 'Could not encrypt', message: '$e', trace: trace);
+      return null;
+    }
+  }
 }

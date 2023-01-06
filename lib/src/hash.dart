@@ -1,5 +1,6 @@
 part of '../encrypt.dart';
 
+/// Class with Static methods to hash strings
 class Hash {
   /// Hashes a given [input] with sha1 to Digest.
   static crypto.Digest sha1Dig(String input) {
