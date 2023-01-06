@@ -1,11 +1,11 @@
+import 'package:crypt/encrypt.dart';
+import 'package:test/test.dart';
+
 // AES
 import 'AES/aes_encrypter_test.dart' as aes_encrypter;
 import 'AES/aes_handler_test.dart' as aes_handler;
 
 // RSA
-import 'package:crypt/encrypt.dart';
-import 'package:test/test.dart';
-
 import 'RSA/rsa_decryptor_test.dart' as rsa_decryptor;
 import 'RSA/rsa_encryption_handler_test.dart' as rsa_encryption_handler;
 import 'RSA/rsa_encryptor_test.dart' as rsa_encryptor;
