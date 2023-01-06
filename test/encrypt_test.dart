@@ -3,6 +3,9 @@ import 'AES/aes_encrypter_test.dart' as aes_encrypter;
 import 'AES/aes_handler_test.dart' as aes_handler;
 
 // RSA
+import 'package:crypt/encrypt.dart';
+import 'package:test/test.dart';
+
 import 'RSA/rsa_decryptor_test.dart' as rsa_decryptor;
 import 'RSA/rsa_encryption_handler_test.dart' as rsa_encryption_handler;
 import 'RSA/rsa_encryptor_test.dart' as rsa_encryptor;
@@ -21,4 +24,22 @@ Future<void> main() async {
 
   // Hash
   await hash.main();
+
+  group('Encrypt', () {
+    final key = Encrypt.publicKey;
+
+    test('should correctly encrypt and decrypt message', () {
+      const message = 'This is a test message';
+      final encrypted = Encrypt.encrypt(data: message, key: key);
+      final decrypted = Encrypt.decrypt(data: encrypted!);
+      expect(decrypted, message);
+      expect(encrypted.length, 2);
+    });
+
+    test('should return null on decrypting invalid message', () {
+      final invalidMessage = ['This is not a valid encrypted message'];
+      final decrypted = Encrypt.decrypt(data: invalidMessage);
+      expect(decrypted, isNull);
+    });
+  });
 }

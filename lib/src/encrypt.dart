@@ -79,7 +79,7 @@ class Encrypt with Logging {
     EncryptionType encryption = EncryptionType.rsa,
   }) {
     // Extract the hash value from the end of the data list
-    final hash = data.removeLast();
+    final hash = data.last;
 
     // Check if the hash value is available (starts with the hashKey prefix)
     if (!hash.startsWith(hashKey)) {
@@ -97,6 +97,9 @@ class Encrypt with Logging {
 
     // Decrypt each chunk of data in the list
     for (final chunk in data) {
+      // Skip the hash value
+      if (chunk == hash) continue;
+
       final decryptedChunk = decryptRaw(
         encryptedText: chunk,
         key: key,
