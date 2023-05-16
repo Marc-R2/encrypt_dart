@@ -13,19 +13,11 @@ class FileHash {
     FileHashType.sha512_256: crypto.sha512256,
   };
 
-  const FileHash.fromFile({
-    required this.file,
-    this.enableCache = true,
-  });
+  const FileHash.fromFile({required this.file});
 
-  FileHash.fromFilePath({
-    required String path,
-    this.enableCache = true,
-  }) : file = File(path);
+  FileHash.fromFilePath({required String path}) : file = File(path);
 
   final File file;
-
-  final bool enableCache;
 
   Future<crypto.Digest> hashDig(FileHashType type) =>
       file.openRead().transform(_typeMap[type]!).first;

@@ -5,6 +5,7 @@ import 'src/RSA/rsa_encryption_handler_test.dart' as rsa_encryption_handler;
 import 'src/RSA/rsa_encryptor_test.dart' as rsa_encryptor;
 import 'src/encrypt_test.dart' as encrypt;
 import 'src/hash_test.dart' as hash;
+import 'src/hash_file_test.dart' as hash_file;
 
 void main() {
   // Encrypt
@@ -21,4 +22,5 @@ void main() {
 
   // Hash
   hash.main();
+  hash_file.main();
 }
