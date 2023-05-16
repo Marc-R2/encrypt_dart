@@ -476,5 +476,45 @@ void main() {
         );
       });
     });
+
+    group('sha512_224', () {
+      test('Hello World', () {
+        final hash = Hash.sha512_224('Hello World');
+        print(hash);
+        expect(
+          hash,
+          'feca41095c80a571ae782f96bcef9ab81bdf0182509a6844f32c4c17',
+        );
+      });
+
+      test('Hello World!', () {
+        final hash = Hash.sha512_224('Hello World!');
+        print(hash);
+        expect(
+          hash,
+          'ba0702dd8dd23280b617ef288bcc7e276060b8ebcddf28f8e4356eae',
+        );
+      });
+    });
+
+    group('sha512_256', () {
+      test('Hello World', () {
+        final hash = Hash.sha512_256('Hello World');
+        print(hash);
+        expect(
+          hash,
+          'ff20018851481c25bfc2e5d0c1e1fa57dac2a237a1a96192f99a10da47aa5442',
+        );
+      });
+
+      test('Hello World!', () {
+        final hash = Hash.sha512_256('Hello World!');
+        print(hash);
+        expect(
+          hash,
+          'f371319eee6b39b058ec262d4e723a26710e46761301c8b54c56fa722267581a',
+        );
+      });
+    });
   });
 }
