@@ -11,6 +11,8 @@ class Encrypt with Logging {
   /// A random RSA key pair is generated on the first use.
   static final RSAEncryptionHandler rsa = RSAEncryptionHandler();
 
+  static final AESHandler aes = AESHandler();
+
   /// The maximum length of a single message that can be encrypted automatically
   static int get maxLen => rsa.maxLen; // min(rsa.maxLen, aes.maxLen);
 
@@ -199,8 +201,7 @@ class Encrypt with Logging {
 
   /// Encrypt given [plainText] using AES.
   static String? encryptAes(String plainText, String key) {
-    // TODO(Marc-R2): Implement
-    return plainText;
+    return aes.encrypt(data: plainText, aesKey: key);
   }
 
   /// Encrypt given [plainText] using RSA.
@@ -228,8 +229,7 @@ class Encrypt with Logging {
 
   /// Decrypt given [encryptedText] using AES.
   static String? decryptAes(String encryptedText, String key) {
-    // TODO(Marc-R2): Implement
-    return encryptedText;
+    return aes.decrypt(data: encryptedText, aesKey: key);
   }
 
   /// Decrypt given [encryptedText] using RSA.
