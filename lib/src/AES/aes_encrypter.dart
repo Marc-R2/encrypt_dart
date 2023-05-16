@@ -22,34 +22,37 @@ class AESEncrypter extends Encryptor with Logging {
   late final Encrypter _encrypter;
 
   /// Encrypt a message
-  String? encrypt(String message) {
-    final log = functionLog('encrypt');
+  String encrypt({required String data, Log? context}) {
+    final log = functionStart('encrypt', context);
 
     // TODO(Marc-R2): 200 is valid for ASCII. Unicode characters may be longer.
-    if (message.length > 200) {
-      log.warn(title: 'Message is too long to be encrypted');
-      return null;
+    if (data.length > 200) {
+      throw log.exception(title: 'Message is too long to be encrypted');
     }
 
     try {
       _updateLastUsed();
-      return _encrypter.encrypt(message, iv: iv).base64;
+      return _encrypter.encrypt(data, iv: iv).base64;
     } catch (e) {
-      log.error(title: 'Error while encrypting message', message: '$e');
-      return null;
+      throw log.exception(
+        title: 'Error while encrypting message',
+        message: '$e',
+      );
     }
   }
 
   /// Decrypt a message
-  String? decrypt(String message) {
-    final log = functionLog('decrypt');
+  String decrypt({required String data, Log? context}) {
+    final log = functionStart('decrypt', context);
 
     try {
       _updateLastUsed();
-      return _encrypter.decrypt64(message, iv: iv);
+      return _encrypter.decrypt64(data, iv: iv);
     } catch (e) {
-      log.error(title: 'Error while decrypting message', message: '$e');
-      return null;
+      throw log.exception(
+        title: 'Error while decrypting message',
+        message: '$e',
+      );
     }
   }
 }

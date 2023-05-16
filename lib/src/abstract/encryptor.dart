@@ -12,4 +12,8 @@ abstract class Encryptor {
 
   /// Internal method to update the last used time
   void _updateLastUsed() => _lastUsed = DateTime.now();
+
+  String encrypt({required String data, required Log? context});
+
+  String decrypt({required String data, required Log? context});
 }

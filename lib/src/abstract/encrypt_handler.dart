@@ -53,4 +53,20 @@ abstract class EncryptHandler<T extends Encryptor> with Logging {
       }
     }
   }
+
+  /// Encrypt given [data] using the RSA algorithm.
+  ///
+  /// The maximum length of [data] is [maxLen].
+  /// Everything longer will be truncated.
+  String encrypt({required String data, required String key}) {
+    final log = functionStart('encrypt');
+    return getInstance(key).encrypt(data: data, context: log);
+  }
+
+  /// Decrypt given [data] using the RSA algorithm
+  /// and the private key of the session.
+  String decrypt({required String data, required String key}) {
+    final log = functionStart('encrypt');
+    return getInstance(key).decrypt(data: data, context: log);
+  }
 }

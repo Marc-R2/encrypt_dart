@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:crypt/encrypt.dart';
+import 'package:log_message/logger.dart';
 import 'package:pointycastle/asymmetric/api.dart';
 import 'package:test/test.dart';
 
@@ -14,8 +15,8 @@ void main() {
       final publicKey = decryptor.publicKeyString;
       final encryptor = RSAEncryptor(publicKey);
 
-      final encrypted = encryptor.encrypt(message);
-      final decrypted = decryptor.decrypt(encrypted!);
+      final encrypted = encryptor.encrypt(data: message);
+      final decrypted = decryptor.decrypt(data: encrypted);
 
       expect(decrypted, message);
     });
@@ -24,7 +25,7 @@ void main() {
       expect(() => RSAEncryptor('invalid key'), throwsFormatException);
     });
 
-    test('should return null on encrypting message that is too long', () {
+    test('should return throws on encrypting message that is too long', () {
       final decryptor = RSADecryptor();
       final publicKey = decryptor.publicKeyString;
       final encryptor = RSAEncryptor(publicKey);
@@ -32,8 +33,10 @@ void main() {
       final message = String.fromCharCodes(
         List.generate(201, (_) => Random().nextInt(128)),
       );
-      final encrypted = encryptor.encrypt(message);
-      expect(encrypted, isNull);
+      expect(
+        () => encryptor.encrypt(data: message),
+        throwsA(isA<ErrorMessage>()),
+      );
     });
 
     test('should correctly encrypt and decrypt special characters', () {
@@ -41,8 +44,8 @@ void main() {
       final publicKey = decryptor.publicKeyString;
       final encryptor = RSAEncryptor(publicKey);
 
-      final encrypted = encryptor.encrypt(messageSpec);
-      final decrypted = decryptor.decrypt(encrypted!);
+      final encrypted = encryptor.encrypt(data: messageSpec);
+      final decrypted = decryptor.decrypt(data: encrypted);
       expect(decrypted, messageSpec);
     });
 

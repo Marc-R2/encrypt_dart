@@ -201,12 +201,12 @@ class Encrypt with Logging {
 
   /// Encrypt given [plainText] using AES.
   static String? encryptAes(String plainText, String key) {
-    return aes.encrypt(data: plainText, aesKey: key);
+    return aes.encrypt(data: plainText, key: key);
   }
 
   /// Encrypt given [plainText] using RSA.
   static String? encryptRsa(String plainText, String key) {
-    return rsa.encrypt(data: plainText, publicKey: key);
+    return rsa.encrypt(data: plainText, key: key);
   }
 
   /// Decrypt given [encryptedText] using the
@@ -229,11 +229,11 @@ class Encrypt with Logging {
 
   /// Decrypt given [encryptedText] using AES.
   static String? decryptAes(String encryptedText, String key) {
-    return aes.decrypt(data: encryptedText, aesKey: key);
+    return aes.decrypt(data: encryptedText, key: key);
   }
 
   /// Decrypt given [encryptedText] using RSA.
   static String? decryptRsa(String encryptedText) {
-    return rsa.decrypt(data: encryptedText);
+    return rsa.decrypt(data: encryptedText, key: '');
   }
 }

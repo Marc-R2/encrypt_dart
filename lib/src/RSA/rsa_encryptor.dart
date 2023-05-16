@@ -19,21 +19,22 @@ class RSAEncryptor extends Encryptor with Logging {
   late final Encrypter encrypter;
 
   /// Encrypt a message
-  String? encrypt(String message) {
+  String encrypt({required String data, Log? context}) {
     final log = functionLog('encrypt');
 
     // TODO(Marc-R2): 200 is valid for ASCII. Unicode characters may be longer.
-    if (message.length > 200) {
-      log.warn(title: 'Message is too long to be encrypted');
-      return null;
+    if (data.length > 200) {
+      throw log.exception(title: 'Message is too long to be encrypted');
     }
 
     try {
       _updateLastUsed();
-      return encrypter.encrypt(message).base64;
+      return encrypter.encrypt(data).base64;
     } catch (e) {
-      log.error(title: 'Error while encrypting message', message: '$e');
-      return null;
+      throw log.exception(
+        title: 'Error while encrypting message',
+        message: '$e',
+      );
     }
   }
 
@@ -92,5 +93,11 @@ class RSAEncryptor extends Encryptor with Logging {
 
   static String _wrapKeyAsPublicKey(String key) {
     return '-----BEGIN PUBLIC KEY-----\r\n$key\r\n-----END PUBLIC KEY-----';
+  }
+
+  @override
+  String decrypt({required String data, required Log? context}) {
+    // TODO: implement decrypt
+    throw UnimplementedError();
   }
 }

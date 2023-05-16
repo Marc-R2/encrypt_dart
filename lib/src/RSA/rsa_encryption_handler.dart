@@ -18,19 +18,16 @@ class RSAEncryptionHandler extends EncryptHandler<RSAEncryptor> with Logging {
   ///
   /// The maximum length of [data] is [maxLen].
   /// Everything longer will be truncated.
-  String? encrypt({required String data, String? publicKey}) {
-    final log = functionLog('encrypt');
-    try {
-      if (data.length > maxLen) return null;
-      if (publicKey == null) return session.encrypt(data);
-      return getInstance(publicKey).encrypt(data);
-    } catch (e, trace) {
-      log.warn(title: 'Could not encrypt', message: '$e', trace: trace);
-      return null;
-    }
+  @override
+  String encrypt({required String data, String? key}) {
+    final log = functionStart('encrypt');
+    if (key == null) return session.encrypt(data: data, context: log);
+    return getInstance(key).encrypt(data: data, context: log);
   }
 
   /// Decrypt given [data] using the RSA algorithm
   /// and the private key of the session.
-  String? decrypt({required String data}) => session.decrypt(data);
+  @override
+  String decrypt({required String data, required String key}) =>
+      session.decrypt(data: data);
 }

@@ -31,14 +31,16 @@ class RSADecryptor extends RSAEncryptor {
   /// Decrypt a message encrypted with the session key pair
   ///
   /// Returns the decrypted message on success, or `null` on failure.
-  String? decrypt(String encryptedMessage) {
-    final log = functionLog('decrypt');
+  String decrypt({required String data, Log? context}) {
+    final log = functionStart('decrypt', context);
     try {
       _updateLastUsed();
-      return encrypter.decrypt64(encryptedMessage);
+      return encrypter.decrypt64(data);
     } catch (e) {
-      log.error(title: 'Error while decrypting message', message: '$e');
-      return null;
+      throw log.exception(
+        title: 'Error while decrypting message',
+        message: '$e',
+      );
     }
   }
 }
