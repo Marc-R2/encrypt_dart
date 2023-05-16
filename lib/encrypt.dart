@@ -29,3 +29,6 @@ part 'src/RSA/rsa_generate_key.dart';
 part 'src/encrypt.dart';
 part 'src/encryption_type.dart';
 part 'src/hash.dart';
+
+part 'src/abstract/encrypt_handler.dart';
+part 'src/abstract/encryptor.dart';

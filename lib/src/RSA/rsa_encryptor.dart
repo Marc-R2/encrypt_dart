@@ -1,7 +1,7 @@
 part of '../../encrypt.dart';
 
 /// Allow to encrypt messages using a RSA public key
-class RSAEncryptor with Logging {
+class RSAEncryptor extends Encryptor with Logging {
   /// Constructor for RSAEncryptor.
   ///
   /// Initializes the [encrypter] field with the provided [publicKey] by
@@ -14,18 +14,6 @@ class RSAEncryptor with Logging {
 
   /// Constructor for the parent inheriting the encryption functions
   RSAEncryptor._parent();
-
-  /// When the instance was last used
-  DateTime _lastUsed = DateTime.now();
-
-  /// Whether the instance has not been used for a while (5 minutes)
-  bool get isExpired => age > 300;
-
-  /// How long the instance has not been used (in seconds)
-  int get age => DateTime.now().difference(_lastUsed).inSeconds;
-
-  /// Internal method to update the last used time
-  void _updateLastUsed() => _lastUsed = DateTime.now();
 
   /// The encrypter used to encrypt messages
   late final Encrypter encrypter;

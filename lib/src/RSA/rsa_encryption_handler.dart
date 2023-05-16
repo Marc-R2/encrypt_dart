@@ -1,7 +1,7 @@
 part of '../../encrypt.dart';
 
 /// A class that contains all the methods to encrypt and decrypt data using RSA.
-class RSAEncryptionHandler with Logging {
+class RSAEncryptionHandler extends EncryptHandler<RSAEncryptor> with Logging {
   /// The current session with the RSA key pair
   late final session = RSADecryptor();
 
@@ -11,56 +11,8 @@ class RSAEncryptionHandler with Logging {
   /// Get the public key of the session
   String get publicKey => session.publicKeyString;
 
-  /// All instances in memory
-  final Map<String, RSAEncryptor> _instances = {};
-
-  /// Get the instance with the given [publicKey].
-  ///
-  /// If no instance with the given [publicKey] exists,
-  /// a new one will be created.
-  RSAEncryptor getInstance(String publicKey) {
-    if (_instances.containsKey(publicKey)) return _instances[publicKey]!;
-    final newInstance = RSAEncryptor(publicKey);
-    _instances[publicKey] = newInstance;
-
-    cleanInstances();
-
-    return newInstance;
-  }
-
-  /// Remove all instances that are not used anymore.
-  void cleanInstances({int targetCount = 128}) {
-    final log = functionLog('cleanInstances');
-    final len = _instances.length;
-    if (len > targetCount * 2) {
-      // Remove the oldest half of instances if they have been expired
-      final sortedInstances = _instances.entries.toList()
-        ..sort((a, b) => a.value.age.compareTo(b.value.age));
-
-      final expiredInstances =
-      sortedInstances.where((element) => element.value.isExpired).toList();
-
-      final expiredCount = expiredInstances.length;
-
-      if (expiredCount > targetCount) {
-        expiredInstances.sublist(0, targetCount).forEach(
-              (element) => _instances.remove(element.key),
-        );
-
-        log.info(
-          title: 'Cleaned RSA instances',
-          message: 'Reduced from {len} to {current} with {expired} '
-              'expired instances and {target} target count',
-          values: {
-            'len': len,
-            'current': _instances.length,
-            'expired': expiredCount,
-            'target': targetCount,
-          },
-        );
-      }
-    }
-  }
+  @override
+  RSAEncryptor createInstance(String key) => RSAEncryptor(key);
 
   /// Encrypt given [data] using the RSA algorithm.
   ///
