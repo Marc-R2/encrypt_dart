@@ -1,7 +1,7 @@
 import 'package:crypt/encrypt.dart';
 import 'package:test/test.dart';
 
-Future<void> main() async {
+void main() {
   group('Hash', () {
     group('sha1', () {
       test('Hello World', () {
