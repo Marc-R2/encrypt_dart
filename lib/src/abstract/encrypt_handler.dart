@@ -13,7 +13,7 @@ abstract class EncryptHandler<T extends Encryptor> with Logging {
   T getInstance(String key) {
     if (_instances.containsKey(key)) return _instances[key]!;
     final newInstance = createInstance(key);
-    _instances[key] ??= newInstance;
+    _instances[key] = newInstance;
 
     cleanInstances();
 

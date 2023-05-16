@@ -16,7 +16,7 @@ class AESHandler extends EncryptHandler<AESEncrypter> with Logging {
     final log = functionLog('encrypt');
     try {
       if (data.length > maxLen) return null;
-      return createInstance(aesKey).encrypt(data);
+      return getInstance(aesKey).encrypt(data);
     } catch (e, trace) {
       log.warn(title: 'Could not encrypt', message: '$e', trace: trace);
       return null;
@@ -28,7 +28,7 @@ class AESHandler extends EncryptHandler<AESEncrypter> with Logging {
   String? decrypt({required String data, required String aesKey}) {
     final log = functionLog('encrypt');
     try {
-      return createInstance(aesKey).decrypt(data);
+      return getInstance(aesKey).decrypt(data);
     } catch (e, trace) {
       log.warn(title: 'Could not encrypt', message: '$e', trace: trace);
       return null;
