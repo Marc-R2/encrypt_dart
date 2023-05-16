@@ -13,6 +13,8 @@ import 'package:log_message/logger.dart';
 import 'package:pointycastle/api.dart' as pc;
 import 'package:pointycastle/pointycastle.dart';
 
+export 'src/file_hash.dart';
+
 // /AES
 part 'src/AES/aes_handler.dart';
 part 'src/AES/aes_encrypter.dart';
