@@ -265,17 +265,9 @@ class RSAKeyGenerator implements KeyGenerator {
     while (true) {
       p = generateProbablePrime(pbitlength, 1, _random);
 
-      if (p % e == BigInt.one) {
-        continue;
-      }
-
-      if (!_isProbablePrime(p, _params.certainty)) {
-        continue;
-      }
-
-      if (e.gcd(p - BigInt.one) == BigInt.one) {
-        break;
-      }
+      if (p % e == BigInt.one) continue;
+      if (!_isProbablePrime(p, _params.certainty)) continue;
+      if (e.gcd(p - BigInt.one) == BigInt.one) break;
     }
 
     // generate a modulus of the required length
@@ -284,31 +276,14 @@ class RSAKeyGenerator implements KeyGenerator {
       while (true) {
         q = generateProbablePrime(qbitlength, 1, _random);
 
-        if ((q - p).abs().bitLength < mindiffbits) {
-          continue;
-        }
-
-        if (q % e == BigInt.one) {
-          continue;
-        }
-
-        if (!_isProbablePrime(q, _params.certainty)) {
-          continue;
-        }
-
-        if (e.gcd(q - BigInt.one) == BigInt.one) {
-          break;
-        }
+        if ((q - p).abs().bitLength < mindiffbits) continue;
+        if (q % e == BigInt.one) continue;
+        if (!_isProbablePrime(q, _params.certainty)) continue;
+        if (e.gcd(q - BigInt.one) == BigInt.one) break;
       }
-
-      // calculate the modulus
       n = p * q;
 
-      if (n.bitLength == _params.bitStrength) {
-        break;
-      }
-
-      // if we get here our primes aren't big enough, make the largest of the two p and try again
+      if (n.bitLength == _params.bitStrength) break;
       p = (p.compareTo(q) > 0) ? p : q;
     }
 
@@ -319,10 +294,7 @@ class RSAKeyGenerator implements KeyGenerator {
       q = swap;
     }
 
-    // calculate the private exponent
-    final pSub1 = p - BigInt.one;
-    final qSub1 = q - BigInt.one;
-    final phi = pSub1 * qSub1;
+    final phi = (p - BigInt.one) * (q - BigInt.one);
     final d = e.modInverse(phi);
 
     return AsymmetricKeyPair(RSAPublicKey(n, e), RSAPrivateKey(n, d, p, q, e));
