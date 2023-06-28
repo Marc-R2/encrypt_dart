@@ -4,6 +4,8 @@ abstract class EncryptHandler<T extends Encryptor> with Logging {
   /// All instances in memory
   final Map<String, T> _instances = {};
 
+  int get instanceCount => _instances.length;
+
   T createInstance(String key);
 
   /// Get the instance with the given [key].
