@@ -20,7 +20,7 @@ enum EncryptionType {
   /// For decryption the central private-key will be used.
   ///
   /// The data will be encoded for transmission and split into chunks.
-  rsa,
+  rsa(maxLength: 200),
 
   /// High security
   ///
@@ -28,5 +28,9 @@ enum EncryptionType {
   /// For decryption the central private-key will be used.
   ///
   /// The data will be encoded for transmission and split into chunks.
-  ecc,
+  ecc;
+
+  const EncryptionType({this.maxLength});
+
+  final int? maxLength;
 }

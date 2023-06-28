@@ -3,16 +3,6 @@ import 'dart:io';
 import 'package:crypto/crypto.dart' as crypto;
 
 class FileHash {
-  static const Map<FileHashType, crypto.Hash> _typeMap = {
-    FileHashType.sha1: crypto.sha1,
-    FileHashType.sha224: crypto.sha224,
-    FileHashType.sha256: crypto.sha256,
-    FileHashType.sha384: crypto.sha384,
-    FileHashType.sha512: crypto.sha512,
-    FileHashType.sha512_224: crypto.sha512224,
-    FileHashType.sha512_256: crypto.sha512256,
-  };
-
   const FileHash.fromFile({required this.file});
 
   FileHash.fromFilePath({required String path}) : file = File(path);
@@ -20,7 +10,7 @@ class FileHash {
   final File file;
 
   Future<crypto.Digest> hashDig(FileHashType type) =>
-      file.openRead().transform(_typeMap[type]!).first;
+      file.openRead().transform(type.algorithm).first;
 
   Future<String> hash(FileHashType type) async =>
       (await hashDig(type)).toString();
@@ -43,11 +33,15 @@ class FileHash {
 }
 
 enum FileHashType {
-  sha1,
-  sha224,
-  sha256,
-  sha384,
-  sha512,
-  sha512_224,
-  sha512_256,
+  sha1(algorithm: crypto.sha1),
+  sha224(algorithm: crypto.sha224),
+  sha256(algorithm: crypto.sha256),
+  sha384(algorithm: crypto.sha384),
+  sha512(algorithm: crypto.sha512),
+  sha512_224(algorithm: crypto.sha512224),
+  sha512_256(algorithm: crypto.sha512256);
+
+  const FileHashType({required this.algorithm});
+
+  final crypto.Hash algorithm;
 }

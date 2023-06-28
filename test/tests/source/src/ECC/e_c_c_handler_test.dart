@@ -1,6 +1,8 @@
 // This file works with test_builder
 // @MarcR2 (Marc Renken) - https://github.com/MarcR2/test_builder
 
+import 'dart:math';
+
 import 'package:crypt/encrypt.dart';
 import 'package:test_builder/test_builder.dart';
 import '../../../../.testGen/source/src/ECC/e_c_c_handler.test_gen.dart';
@@ -21,24 +23,34 @@ class ECCHandlerTest extends ECCHandlerTestTop {
 
   @override
   void encryptTest() {
-    final handlerA = ECCHandler();
-    final handlerB = ECCHandler();
+    final A = ECCHandler();
+    final B = ECCHandler();
     test('encryptTest same', () {
       const data = 'encryptTest';
-      final encrypted = handlerA.encrypt(data: data, key: handlerA.publicKey);
+      final encrypted = A.encrypt(data: data, key: A.publicKey);
       expect(encrypted, isNot(data));
-      final decrypted =
-          handlerA.decrypt(data: encrypted, key: handlerA.publicKey);
+      final decrypted = A.decrypt(data: encrypted, key: A.publicKey);
       expect(decrypted, data);
     });
 
     test('encryptTest other', () {
       const data = 'encryptTest';
-      final encrypted = handlerA.encrypt(data: data, key: handlerB.publicKey);
+      final encrypted = A.encrypt(data: data, key: B.publicKey);
       expect(encrypted, isNot(data));
-      final decrypted =
-          handlerB.decrypt(data: encrypted, key: handlerA.publicKey);
+      final decrypted = B.decrypt(data: encrypted, key: A.publicKey);
       expect(decrypted, data);
+    });
+
+    test('test different lengths of data', () {
+      for (var i = 1; i < 4096; i++) {
+        final data = String.fromCharCodes(
+          List.generate(i, (_) => Random().nextInt(256)),
+        );
+        final encrypted = A.encrypt(data: data, key: B.publicKey);
+        expect(encrypted, isNot(data));
+        final decrypted = B.decrypt(data: encrypted, key: A.publicKey);
+        expect(decrypted, data);
+      }
     });
   }
 

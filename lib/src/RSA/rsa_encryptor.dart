@@ -97,7 +97,7 @@ class RSAEncryptor extends Encryptor with Logging {
 
   @override
   String decrypt({required String data, required Log? context}) {
-    // TODO: implement decrypt
-    throw UnimplementedError();
+    final log = functionStart('decrypt', context);
+    throw log.exception(title: 'RSAEncryptor cannot decrypt messages');
   }
 }

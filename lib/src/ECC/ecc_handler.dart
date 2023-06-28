@@ -8,7 +8,7 @@ class ECCHandler extends EncryptHandler<ECCEncryptor> with Logging {
 
   /// The maximum length of a single message that can be encrypted automatically
   @TestGen.exclude()
-  int get maxLen => 200;
+  int get maxLen => 8192;
 
   /// Get the public key of the session
   String get publicKey => session.publicKeyString;

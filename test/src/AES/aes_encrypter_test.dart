@@ -1,5 +1,4 @@
 import 'package:crypt/encrypt.dart';
-import 'package:log_message/logger.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -19,10 +18,8 @@ void main() {
     test('encrypt long message', () {
       final instance = AESEncrypter(key);
       final message = 'The quick brown fox jumps over the lazy dog. ' * 20;
-      expect(
-        () => instance.encrypt(data: message),
-        throwsA(isA<ErrorMessage>()),
-      );
+      final encrypted = instance.encrypt(data: message);
+      expect(encrypted, hasLength(greaterThan(message.length)));
     });
 
     test('encrypt and decrypt with special characters', () {
