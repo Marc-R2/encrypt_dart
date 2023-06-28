@@ -5,19 +5,25 @@ import 'package:log_message/logger.dart';
 import 'package:pointycastle/asymmetric/api.dart';
 import 'package:test/test.dart';
 
+import '../../../lib/play.dart';
+
 void main() {
   const message = 'This is a test message';
   const messageSpec = r'This is a test message with special characters: &%$#@!';
 
   group('RSAEncryptor', () {
     test('should correctly encrypt and decrypt message', () {
+      TimeDebugger.marker('0');
       final decryptor = RSADecryptor();
+      TimeDebugger.marker('1');
       final publicKey = decryptor.publicKeyString;
+      TimeDebugger.marker('2');
       final encryptor = RSAEncryptor(publicKey);
-
+      TimeDebugger.marker('3');
       final encrypted = encryptor.encrypt(data: message);
+      TimeDebugger.marker('4');
       final decrypted = decryptor.decrypt(data: encrypted);
-
+      TimeDebugger.marker('5');
       expect(decrypted, message);
     });
 

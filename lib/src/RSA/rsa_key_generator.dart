@@ -481,11 +481,14 @@ class RSAKeyGenerator implements KeyGenerator {
     return _millerRabin(x, t);
   }
 
+  static int callCounter = 0;
+
   static BigInt generateProbablePrime(
     int bitLength,
     int certainty,
     SecureRandom rnd,
   ) {
+    print('generateProbablePrime($bitLength, $certainty, $rnd) - ${++callCounter}');
     if (bitLength < 2) return BigInt.one;
 
     var candidate = rnd.nextBigInteger(bitLength);

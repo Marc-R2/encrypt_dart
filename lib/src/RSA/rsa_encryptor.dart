@@ -40,35 +40,41 @@ class RSAEncryptor extends Encryptor with Logging {
 
   /// Enode the given [publicKey] to PEM format using the PKCS#8 standard.
   static String encodeRSAPublicKeyToPem(RSAPublicKey publicKey) {
+    TimeDebugger.indent('encodeRSAPublicKeyToPem');
     // Create an ASN1 sequence for the algorithm identifier
     final algorithmSeq = ASN1Sequence();
+    TimeDebugger.marker('1');
+
     // Create an ASN1 object for the algorithm parameters
     final paramsAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x5, 0x0]));
+    TimeDebugger.marker('2');
     // Add the algorithm identifier and parameters to the sequence
     algorithmSeq
       ..add(ASN1ObjectIdentifier.fromName('rsaEncryption'))
       ..add(paramsAsn1Obj);
-
+    TimeDebugger.marker('3');
     // Create an ASN1 sequence for the public key
     final publicKeySeq = ASN1Sequence()
       ..add(ASN1Integer(publicKey.modulus))
       ..add(ASN1Integer(publicKey.exponent));
+    TimeDebugger.marker('4');
     // Create an ASN1 bit string from the public key sequence
     final publicKeySeqBitString = ASN1BitString(
       stringValues: Uint8List.fromList(publicKeySeq.encode()),
     );
-
+    TimeDebugger.marker('5');
     // Create the top-level ASN1 sequence containing the algorithm identifier
     // and public key
     final topLevelSeq = ASN1Sequence()
       ..add(algorithmSeq)
       ..add(publicKeySeqBitString);
-
+    TimeDebugger.marker('6');
     // Encode the top-level sequence as a base64 string
     final dataBase64 = base64.encode(topLevelSeq.encode());
+    TimeDebugger.marker('7');
     // Split the base64 string into chunks of size 64
     final chunks = chunk(dataBase64, 64);
-
+    TimeDebugger.unindent();
     // Return the chunks as a single string, separated by newlines
     return chunks.join('\n');
   }

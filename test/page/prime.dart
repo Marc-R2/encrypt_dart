@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:crypt/play.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'package:test/test.dart';
 
@@ -2026,11 +2027,16 @@ class Prime {
     int certainty,
     SecureRandom rnd,
   ) {
+    TimeDebugger.indent('generateProbablePrime');
     if (bitLength < 2) return BigInt.one;
 
+    TimeDebugger.marker('1');
     while (true) {
       final potentialPrime = _generatePotentialPrime(bitLength, rnd);
-      if (_isProbablePrime(potentialPrime, certainty, rnd)) {
+      final isProb = _isProbablePrime(potentialPrime, certainty, rnd);
+      if (isProb) {
+        TimeDebugger.marker('2');
+        TimeDebugger.unindent();
         return potentialPrime;
       }
     }
