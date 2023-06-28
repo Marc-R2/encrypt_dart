@@ -21,13 +21,6 @@ class Encrypt with Logging {
   /// The symmetric key have to be provided on each operation call.
   static final AESHandler aes = AESHandler();
 
-  /// PublicKey of the session
-  @Deprecated(
-    'RSA and ECC have different public keys. '
-    'Use rsaPublicKey or eccPublicKey instead.',
-  )
-  static String get publicKey => rsa.publicKey;
-
   /// RSA PublicKey of the session
   static String get rsaPublicKey => rsa.publicKey;
 
