@@ -27,9 +27,9 @@ dev_dependencies:
     git:
       url: https://github.com/domohuhn/mutation-test.git
   test: ^1.22.1
-  test_process: ^2.0.3
   test_builder:
     git:
       url: https://github.com/Marc-R2/test_builder.git
       path: packages/test_builder
+  test_process: ^2.0.3
   very_good_analysis: 3.1.0

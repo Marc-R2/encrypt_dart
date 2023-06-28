@@ -7,7 +7,7 @@ Future<void> main() async {
       'rsa',
       onPlatform: {'js': const Skip('Take too long on js')},
       () {
-        final key = Encrypt.publicKey;
+        final key = Encrypt.rsaPublicKey;
 
         test('should correctly encrypt and decrypt message with rsa', () {
           const message = 'This is a test message';

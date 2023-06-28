@@ -77,22 +77,30 @@ void main() {
 
         test('should correctly hash file with sha224', () async {
           expect(
-              await file1Hash[FileHashType.sha224], Hash.sha224(file1Content));
+            await file1Hash[FileHashType.sha224],
+            Hash.sha224(file1Content),
+          );
         });
 
         test('should correctly hash file with sha256', () async {
           expect(
-              await file1Hash[FileHashType.sha256], Hash.sha256(file1Content));
+            await file1Hash[FileHashType.sha256],
+            Hash.sha256(file1Content),
+          );
         });
 
         test('should correctly hash file with sha384', () async {
           expect(
-              await file1Hash[FileHashType.sha384], Hash.sha384(file1Content));
+            await file1Hash[FileHashType.sha384],
+            Hash.sha384(file1Content),
+          );
         });
 
         test('should correctly hash file with sha512', () async {
           expect(
-              await file1Hash[FileHashType.sha512], Hash.sha512(file1Content));
+            await file1Hash[FileHashType.sha512],
+            Hash.sha512(file1Content),
+          );
         });
 
         test('should correctly hash file with sha512_224', () async {

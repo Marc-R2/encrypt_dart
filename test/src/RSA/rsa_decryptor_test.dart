@@ -19,7 +19,6 @@ void main() {
 
     test('should throw on decrypting invalid message', () {
       final decryptor = RSADecryptor();
-      ;
       expect(
         () => decryptor.decrypt(data: invalidMessage),
         throwsA(isA<ErrorMessage>()),
