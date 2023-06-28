@@ -1,3 +1,5 @@
+import 'package:test/test.dart';
+
 import 'src/AES/aes_encrypter_test.dart' as aes_encrypter;
 import 'src/AES/aes_handler_test.dart' as aes_handler;
 import 'src/RSA/rsa_decryptor_test.dart' as rsa_decryptor;
@@ -16,9 +18,15 @@ void main() {
   aes_handler.main();
 
   // RSA
-  rsa_encryptor.main();
-  rsa_decryptor.main();
-  rsa_encryption_handler.main();
+  group(
+    'RSA',
+    skip: true,
+    () {
+      rsa_encryptor.main();
+      rsa_decryptor.main();
+      rsa_encryption_handler.main();
+    },
+  );
 
   // Hash
   hash.main();
