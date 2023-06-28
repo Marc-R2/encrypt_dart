@@ -1,7 +1,7 @@
 part of '../../encrypt.dart';
 
 /// A class that contains all the methods to encrypt and decrypt data using RSA.
-class RSAEncryptionHandler extends EncryptHandler<RSAEncryptor> with Logging {
+class RSAHandler extends EncryptHandler<RSAEncryptor> with Logging {
   /// The current session with the RSA key pair
   late final session = RSADecryptor();
 

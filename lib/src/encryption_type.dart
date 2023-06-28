@@ -2,13 +2,31 @@ part of '../encrypt.dart';
 
 /// Possible security types for a package.
 enum EncryptionType {
-  /// No security. The data in the package payload is not encrypted.
+  /// No security
+  ///
+  /// The data will be encoded for transmission and split into chunks.
   none,
-  /// Medium security. The data in the package payload is encrypted using the
-  /// previously agreed password. This password is sent in the handshake.
-  /// The minimum password length is 128 characters.
+
+  /// Medium security
+  ///
+  /// The data will be en-/decrypted using AES and a given key.
+  ///
+  /// The data will be encoded for transmission and split into chunks.
   aes,
-  /// High security. The data in the package payload is encrypted using the
-  /// public key of the destination. The public key is sent in the handshake.
+
+  /// High security
+  ///
+  /// The data will be encrypted using RSA with a given public-key.
+  /// For decryption the central private-key will be used.
+  ///
+  /// The data will be encoded for transmission and split into chunks.
   rsa,
+
+  /// High security
+  ///
+  /// The data will be encrypted using ECC with a given public-key.
+  /// For decryption the central private-key will be used.
+  ///
+  /// The data will be encoded for transmission and split into chunks.
+  ecc,
 }

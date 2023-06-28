@@ -12,10 +12,15 @@ dependencies:
   crypto: ^3.0.2
   elliptic: ^0.3.8
   encrypt: ^5.0.1
+  eosdart_ecc: ^0.4.4
   log_message:
     git:
       url: https://github.com/Marc-R2/logger_dart.git
   pointycastle: 3.6.2
+  test_builder_annotation:
+    git:
+      url: https://github.com/Marc-R2/test_builder.git
+      path: packages/test_builder_annotation
 
 dev_dependencies:
   mutation_test:
@@ -23,4 +28,8 @@ dev_dependencies:
       url: https://github.com/domohuhn/mutation-test.git
   test: ^1.22.1
   test_process: ^2.0.3
+  test_builder:
+    git:
+      url: https://github.com/Marc-R2/test_builder.git
+      path: packages/test_builder
   very_good_analysis: 3.1.0

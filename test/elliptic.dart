@@ -1,6 +1,7 @@
 import 'package:elliptic/ecdh.dart';
 import 'package:elliptic/elliptic.dart';
-import 'package:test/scaffolding.dart';
+import 'package:eosdart_ecc/eosdart_ecc.dart';
+import 'package:test/test.dart';
 
 void main() {
   final curves = [
@@ -27,11 +28,13 @@ void main() {
         var privateAlice = ec.generatePrivateKey();
         var publicAlice = privateAlice.publicKey;
         var privateBob = ec.generatePrivateKey();
-        var publicBob = privateAlice.publicKey;
+        var publicBob = privateBob.publicKey;
         var secretAlice = computeSecretHex(privateAlice, publicBob);
         var secretBob = computeSecretHex(privateBob, publicAlice);
-        print('secretAlice: 0x$secretAlice');
-        print('secretBob: 0x$secretBob');
+        print('secretA: 0x$secretAlice');
+        print('secretB: 0x$secretBob');
+
+        expect(secretAlice, equals(secretBob));
       });
 
       test('repeated aver. time to public key', () {
@@ -39,7 +42,7 @@ void main() {
         final timesKeyPublic = <Duration>[];
         final timesKeyTotal = <Duration>[];
 
-        for (var i = 0; i < 2048; i++) {
+        for (var i = 0; i < 256; i++) {
           final start1 = DateTime.now();
           final key = ec.generatePrivateKey();
           timesKeyPrivate.add(DateTime.now().difference(start1));
@@ -49,9 +52,12 @@ void main() {
           timesKeyPublic.add(end.difference(start2));
           timesKeyTotal.add(end.difference(start1));
         }
-        final averPrivate = timesKeyPrivate.reduce((a, b) => a + b) ~/ timesKeyPrivate.length;
-        final averPublic = timesKeyPublic.reduce((a, b) => a + b) ~/ timesKeyPublic.length;
-        final averTotal = timesKeyTotal.reduce((a, b) => a + b) ~/ timesKeyTotal.length;
+        final averPrivate =
+            timesKeyPrivate.reduce((a, b) => a + b) ~/ timesKeyPrivate.length;
+        final averPublic =
+            timesKeyPublic.reduce((a, b) => a + b) ~/ timesKeyPublic.length;
+        final averTotal =
+            timesKeyTotal.reduce((a, b) => a + b) ~/ timesKeyTotal.length;
         print('aver. time: ${averPrivate.inMicroseconds}us private key');
         print('aver. time: ${averPublic.inMicroseconds}us public key');
         print('aver. time: ${averTotal.inMicroseconds}us total');

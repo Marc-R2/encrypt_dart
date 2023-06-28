@@ -4,11 +4,11 @@ import 'package:test/test.dart';
 
 void main() {
   group('RSAEncryptionHandler', () {
-    late RSAEncryptionHandler rsaEncryptionHandler;
+    late RSAHandler rsaEncryptionHandler;
     late String publicKey;
 
     setUp(() {
-      rsaEncryptionHandler = RSAEncryptionHandler();
+      rsaEncryptionHandler = RSAHandler();
       publicKey = rsaEncryptionHandler.publicKey;
     });
 

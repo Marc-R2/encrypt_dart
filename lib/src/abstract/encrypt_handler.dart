@@ -66,7 +66,7 @@ abstract class EncryptHandler<T extends Encryptor> with Logging {
   /// Decrypt given [data] using the RSA algorithm
   /// and the private key of the session.
   String decrypt({required String data, required String key}) {
-    final log = functionStart('encrypt');
+    final log = functionStart('decrypt');
     return getInstance(key).decrypt(data: data, context: log);
   }
 }

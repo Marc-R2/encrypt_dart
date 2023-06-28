@@ -6,12 +6,21 @@ part of '../encrypt.dart';
 ///
 /// All other methods are used to by theses methods.
 class Encrypt with Logging {
-  /// [RSAEncryptionHandler] instance to perform RSA encryption
+  /// [RSAHandler] instance to perform RSA encryption
   ///
   /// A random RSA key pair is generated on the first use.
-  static final RSAEncryptionHandler rsa = RSAEncryptionHandler();
+  static final RSAHandler rsa = RSAHandler();
 
+  /// [ECCHandler] instance to perform ECC encryption
+  ///
+  /// A random ECC key pair is generated on the first use.
+  static final ECCHandler ecc = ECCHandler();
+
+  /// [AESHandler] instance to perform AES encryption
+  ///
+  /// The symmetric key have to be provided on each operation call.
   static final AESHandler aes = AESHandler();
+
 
   /// The maximum length of a single message that can be encrypted automatically
   static int get maxLen => rsa.maxLen; // min(rsa.maxLen, aes.maxLen);
@@ -196,6 +205,8 @@ class Encrypt with Logging {
         return encryptAes(plainText, key);
       case EncryptionType.rsa:
         return encryptRsa(plainText, key);
+      case EncryptionType.ecc:
+        return encryptEcc(plainText, key);
     }
   }
 
@@ -207,6 +218,10 @@ class Encrypt with Logging {
   /// Encrypt given [plainText] using RSA.
   static String? encryptRsa(String plainText, String key) {
     return rsa.encrypt(data: plainText, key: key);
+  }
+
+  static String? encryptEcc(String plainText, String key) {
+    return ecc.encrypt(data: plainText, key: key);
   }
 
   /// Decrypt given [encryptedText] using the
@@ -224,6 +239,8 @@ class Encrypt with Logging {
         return decryptAes(encryptedText, key);
       case EncryptionType.rsa:
         return decryptRsa(encryptedText);
+      case EncryptionType.ecc:
+        return decryptEcc(encryptedText);
     }
   }
 
@@ -235,5 +252,9 @@ class Encrypt with Logging {
   /// Decrypt given [encryptedText] using RSA.
   static String? decryptRsa(String encryptedText) {
     return rsa.decrypt(data: encryptedText, key: '');
+  }
+
+  static String? decryptEcc(String encryptedText) {
+    return ecc.decrypt(data: encryptedText, key: '');
   }
 }
