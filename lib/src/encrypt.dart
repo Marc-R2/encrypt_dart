@@ -124,11 +124,12 @@ class Encrypt with Logging {
   }
 
   /// Splits a given [plainText] into chunks of [maxLen] characters.
+  @TestGen()
   static List<String> splitIntoBlocks(String plainText, EncryptionType type) {
     final maxLen = type.maxLength ?? (plainText.length > 8192 ? 8192 : 1024);
 
     final blocks = plainText.splitMapJoin(
-      RegExp('.{1,$maxLen'),
+      RegExp('.{1,$maxLen}'),
       onMatch: (m) => '${m.group(0)}\n',
       onNonMatch: (m) => m,
     );
@@ -142,23 +143,14 @@ class Encrypt with Logging {
 
   /// Creates the hash of given [chunks].
   static String? blockHash(List<String> chunks) {
-    try {
-      chunks.removeWhere((block) => block.startsWith(hashKey));
+    chunks.removeWhere((block) => block.startsWith(hashKey));
 
-      final message = chunks.join('-');
-      final blockCount = chunks.length;
-      final textLength = message.length;
-      final mac = '$textLength-$blockCount-${textLength % blockCount}';
+    final message = chunks.join('-');
+    final blockCount = chunks.length;
+    final textLength = message.length;
+    final mac = '$textLength-$blockCount-${textLength % blockCount}';
 
-      return '$hashKey${Hash.hmacSha512(message, mac)}';
-    } catch (e, trace) {
-      Message.error(
-        title: 'Failed to hash data',
-        text: '$e',
-        stackTrace: trace,
-      );
-      return null;
-    }
+    return '$hashKey${Hash.hmacSha512(message, mac)}';
   }
 
   /// Encrypt given [plainText] using the
