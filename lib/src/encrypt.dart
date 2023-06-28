@@ -21,12 +21,21 @@ class Encrypt with Logging {
   /// The symmetric key have to be provided on each operation call.
   static final AESHandler aes = AESHandler();
 
-
   /// The maximum length of a single message that can be encrypted automatically
   static int get maxLen => rsa.maxLen; // min(rsa.maxLen, aes.maxLen);
 
   /// PublicKey of the session
+  @Deprecated(
+    'RSA and ECC have different public keys. '
+    'Use rsaPublicKey or eccPublicKey instead.',
+  )
   static String get publicKey => rsa.publicKey;
+
+  /// RSA PublicKey of the session
+  static String get rsaPublicKey => rsa.publicKey;
+
+  /// ECC PublicKey of the session
+  static String get eccPublicKey => ecc.publicKey;
 
   /// Encrypt given [data] using the
   /// encryption method specified in [encryption].
@@ -255,6 +264,6 @@ class Encrypt with Logging {
   }
 
   static String? decryptEcc(String encryptedText) {
-    return ecc.decrypt(data: encryptedText, key: '');
+    return ecc.decrypt(data: encryptedText, key: eccPublicKey);
   }
 }

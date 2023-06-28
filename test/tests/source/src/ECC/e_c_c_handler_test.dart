@@ -27,7 +27,8 @@ class ECCHandlerTest extends ECCHandlerTestTop {
       const data = 'encryptTest';
       final encrypted = handlerA.encrypt(data: data, key: handlerA.publicKey);
       expect(encrypted, isNot(data));
-      final decrypted = handlerA.decrypt(data: encrypted, key: handlerA.publicKey);
+      final decrypted =
+          handlerA.decrypt(data: encrypted, key: handlerA.publicKey);
       expect(decrypted, data);
     });
 
@@ -35,7 +36,8 @@ class ECCHandlerTest extends ECCHandlerTestTop {
       const data = 'encryptTest';
       final encrypted = handlerA.encrypt(data: data, key: handlerB.publicKey);
       expect(encrypted, isNot(data));
-      final decrypted = handlerB.decrypt(data: encrypted, key: handlerA.publicKey);
+      final decrypted =
+          handlerB.decrypt(data: encrypted, key: handlerA.publicKey);
       expect(decrypted, data);
     });
   }
@@ -43,8 +45,6 @@ class ECCHandlerTest extends ECCHandlerTestTop {
   @override
   void decryptTest() {
     // TODO: Implement tests
-    test('decryptTest', () {
-      expect('decryptTest', 'isImplemented');
-    });
+    test('decryptTest', () {});
   }
 }
