@@ -4,7 +4,6 @@
 library crypt;
 
 import 'dart:convert';
-import 'dart:js';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -15,6 +14,7 @@ import 'package:encrypt/encrypt.dart';
 import 'package:log_message/logger.dart';
 import 'package:pointycastle/api.dart' as pc;
 import 'package:pointycastle/pointycastle.dart';
+import 'package:test_builder_annotation/test_builder_annotation.dart';
 
 export 'src/file_hash.dart';
 

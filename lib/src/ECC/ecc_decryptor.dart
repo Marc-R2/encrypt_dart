@@ -1,15 +1,33 @@
 part of '../../encrypt.dart';
 
+@TestGen.exclude()
 class ECCDecryptor extends ECCEncryptor {
-  ECCDecryptor() : super._parent() {
-    _privateKey = curve.generatePrivateKey();
+  ///
+  factory ECCDecryptor() {
+    final curve = elliptic.getP521();
+    final privateKey = curve.generatePrivateKey();
+    final publicKey = privateKey.publicKey;
+    return ECCDecryptor._(
+      secret: computeSecretHex(privateKey, publicKey),
+      curve: curve,
+      privateKey: privateKey,
+      publicKey: publicKey,
+    );
   }
 
-  late final elliptic.PublicKey? _publicKey;
+  ECCDecryptor._({
+    required String secret,
+    required this.curve,
+    required elliptic.PrivateKey privateKey,
+    required this.publicKey,
+  })  : _privateKey = privateKey,
+        super.fromSecret(secret);
 
-  elliptic.PublicKey get publicKey => _publicKey ??= _privateKey.publicKey;
+  final elliptic.Curve curve;
 
-  late final elliptic.PrivateKey _privateKey;
+  final elliptic.PublicKey publicKey;
+
+  final elliptic.PrivateKey _privateKey;
 
   String get publicKeyString => publicKey.toHex();
 

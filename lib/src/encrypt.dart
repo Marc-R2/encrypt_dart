@@ -43,7 +43,7 @@ class Encrypt with Logging {
   static List<String>? encrypt({
     required String data,
     String key = '',
-    EncryptionType encryption = EncryptionType.rsa,
+    EncryptionType encryption = EncryptionType.ecc,
   }) {
     // Split the data into equally sized chunks with a max length of [maxLen]
     final chunks = splitIntoBlocks(data);
@@ -87,7 +87,7 @@ class Encrypt with Logging {
   static String? decrypt({
     required List<String> data,
     String key = '',
-    EncryptionType encryption = EncryptionType.rsa,
+    EncryptionType encryption = EncryptionType.ecc,
   }) {
     // Extract the hash value from the end of the data list
     final hash = data.last;
