@@ -43,11 +43,9 @@ class Encrypt with Logging {
     String key = '',
     EncryptionType encryption = EncryptionType.ecc,
   }) {
-    // Split the data into equally sized chunks with a max length of [maxLen]
     final chunks = splitIntoBlocks(data, encryption);
     final encryptedChunks = <String>[];
 
-    // Iterate over each chunk and encrypt it
     for (final chunk in chunks) {
       final encryptedChunk = encryptRaw(
         plainText: chunk,
@@ -55,21 +53,11 @@ class Encrypt with Logging {
         encryption: encryption,
       );
 
-      // If encryptRaw returns null, return null
       if (encryptedChunk == null) return null;
       encryptedChunks.add(encryptedChunk);
     }
 
-    // Generate a hash of the original chunks
-    final hash = blockHash(chunks);
-    // If blockHash returns null, return null
-    if (hash == null) return null;
-
-    // Add the hash to the end of the list of encrypted chunks
-    encryptedChunks.add(hash);
-
-    // Return the list of encrypted chunks
-    return encryptedChunks;
+    return encryptedChunks..add(blockHash(chunks));
   }
 
   /// Decrypt given chunks of [data] using the
@@ -141,7 +129,7 @@ class Encrypt with Logging {
   static const hashKey = '---hash---';
 
   /// Creates the hash of given [chunks].
-  static String? blockHash(List<String> chunks) {
+  static String blockHash(List<String> chunks) {
     chunks.removeWhere((block) => block.startsWith(hashKey));
 
     final message = chunks.join('-');

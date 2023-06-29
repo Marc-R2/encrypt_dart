@@ -5,9 +5,6 @@ class RSAHandler extends EncryptHandler<RSAEncryptor> with Logging {
   /// The current session with the RSA key pair
   late final session = RSADecryptor();
 
-  /// The maximum length of a single message that can be encrypted automatically
-  int get maxLen => 200;
-
   /// Get the public key of the session
   String get publicKey => session.publicKeyString;
 
@@ -16,12 +13,11 @@ class RSAHandler extends EncryptHandler<RSAEncryptor> with Logging {
 
   /// Encrypt given [data] using the RSA algorithm.
   ///
-  /// The maximum length of [data] is [maxLen].
+  /// The maximum length of [data] is 200.
   /// Everything longer will be truncated.
   @override
-  String encrypt({required String data, String? key, Log? context}) {
+  String encrypt({required String data, required String key, Log? context}) {
     final log = functionStart('encrypt', context);
-    if (key == null) return session.encrypt(data: data, context: log);
     return getInstance(key, context: log).encrypt(data: data, context: log);
   }
 

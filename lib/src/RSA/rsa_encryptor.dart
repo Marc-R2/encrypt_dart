@@ -83,6 +83,7 @@ class RSAEncryptor extends Encryptor with Logging {
   }
 
   @override
+  @TestGen()
   String decrypt({required String data, required Log? context}) {
     final log = functionStart('decrypt', context);
     throw log.exception(title: 'RSAEncryptor cannot decrypt messages');

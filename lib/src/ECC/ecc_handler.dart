@@ -6,10 +6,6 @@ class ECCHandler extends EncryptHandler<ECCEncryptor> with Logging {
   /// The current session with the ECC key pair
   late final session = ECCDecryptor();
 
-  /// The maximum length of a single message that can be encrypted automatically
-  @TestGen.exclude()
-  int get maxLen => 8192;
-
   /// Get the public key of the session
   String get publicKey => session.publicKeyString;
 
@@ -18,9 +14,6 @@ class ECCHandler extends EncryptHandler<ECCEncryptor> with Logging {
   ECCEncryptor createInstance(String key) => ECCEncryptor(key, session);
 
   /// Encrypt given [data] using the ECC algorithm.
-  ///
-  /// The maximum length of [data] is [maxLen].
-  /// Everything longer will be truncated.
   @override
   String encrypt({required String data, required String key, Log? context}) =>
       getInstance(key).encrypt(data: data, context: context);
