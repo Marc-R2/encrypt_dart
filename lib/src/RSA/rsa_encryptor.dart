@@ -3,38 +3,26 @@ part of '../../encrypt.dart';
 /// Allow to encrypt messages using a RSA public key
 class RSAEncryptor extends Encryptor with Logging {
   /// Constructor for RSAEncryptor.
-  ///
-  /// Initializes the [encrypter] field with the provided [publicKey] by
-  /// first parsing the key using RSAKeyParser and then initializing the
-  /// [encrypter] with the parsed key.
-  RSAEncryptor(String publicKey) {
+  factory RSAEncryptor(String publicKey) {
     final key = RSAKeyParser().parse(_wrapKeyAsPublicKey(publicKey));
-    encrypter = Encrypter(RSA(publicKey: key as RSAPublicKey));
+    return RSAEncryptor.fromKey(key as RSAPublicKey, null);
   }
 
   /// Constructor for the parent inheriting the encryption functions
-  RSAEncryptor._parent();
-
-  /// The encrypter used to encrypt messages
-  late final Encrypter encrypter;
+  RSAEncryptor.fromKey(RSAPublicKey? publicKey, RSAPrivateKey? privateKey)
+      : super(RSA(publicKey: publicKey, privateKey: privateKey));
 
   /// Encrypt a message
-  String? encrypt(String message) {
+  @override
+  String encrypt({required String data, Log? context}) {
     final log = functionLog('encrypt');
 
     // TODO(Marc-R2): 200 is valid for ASCII. Unicode characters may be longer.
-    if (message.length > 200) {
-      log.warn(title: 'Message is too long to be encrypted');
-      return null;
+    if (data.length > 200) {
+      throw log.exception(title: 'Message is too long to be encrypted');
     }
 
-    try {
-      _updateLastUsed();
-      return encrypter.encrypt(message).base64;
-    } catch (e) {
-      log.error(title: 'Error while encrypting message', message: '$e');
-      return null;
-    }
+    return useEncrypter((e) => e.encrypt(data).base64, context);
   }
 
   /// Enode the given [publicKey] to PEM format using the PKCS#8 standard.
@@ -92,5 +80,12 @@ class RSAEncryptor extends Encryptor with Logging {
 
   static String _wrapKeyAsPublicKey(String key) {
     return '-----BEGIN PUBLIC KEY-----\r\n$key\r\n-----END PUBLIC KEY-----';
+  }
+
+  @override
+  @TestGen()
+  String decrypt({required String data, required Log? context}) {
+    final log = functionStart('decrypt', context);
+    throw log.exception(title: 'RSAEncryptor cannot decrypt messages');
   }
 }

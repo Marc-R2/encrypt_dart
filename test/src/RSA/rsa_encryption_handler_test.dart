@@ -1,13 +1,14 @@
 import 'package:crypt/encrypt.dart';
+import 'package:log_message/logger.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('RSAEncryptionHandler', () {
-    late RSAEncryptionHandler rsaEncryptionHandler;
+    late RSAHandler rsaEncryptionHandler;
     late String publicKey;
 
     setUp(() {
-      rsaEncryptionHandler = RSAEncryptionHandler();
+      rsaEncryptionHandler = RSAHandler();
       publicKey = rsaEncryptionHandler.publicKey;
     });
 
@@ -15,21 +16,23 @@ void main() {
       const message = 'This is a test message';
       final encryptedMessage = rsaEncryptionHandler.encrypt(
         data: message,
-        publicKey: publicKey,
+        key: publicKey,
       );
       expect(encryptedMessage, isNotNull);
       expect(encryptedMessage, isNotEmpty);
       expect(encryptedMessage, isNot(message));
     });
 
-    test('encrypt with message length greater than maxLen', () {
+    test('encrypt with message length greater than maxLen should throw', () {
       // Gen a 1024 character string
       final message = List.generate(1024, (n) => '$n').join();
-      final encryptedMessage = rsaEncryptionHandler.encrypt(
-        data: message,
-        publicKey: publicKey,
+      expect(
+        () => rsaEncryptionHandler.encrypt(
+          data: message,
+          key: publicKey,
+        ),
+        throwsA(isA<ErrorMessage>()),
       );
-      expect(encryptedMessage, isNull);
     });
   });
 }

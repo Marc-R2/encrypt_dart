@@ -8,3 +8,5 @@ pubspec.lock
 /.idea/
 /encrypt_dart.iml
 /mutation-test-report/
+**/*.test_gen.dart
+**/.testGen/**

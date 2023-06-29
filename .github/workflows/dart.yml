@@ -14,16 +14,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Auth GitHub
+        run: git config --global url."https://${{ secrets.MANU_GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
       # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@v1.3
         with:
-          sdk: "2.19.0-146.2.beta"
+          sdk: "3.0.5"
 
       - name: Install dependencies
         run: dart pub get
+
+      - name: TestGen
+        run: dart pub run test_builder
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       # - name: Verify formatting

@@ -2,54 +2,38 @@ part of '../../encrypt.dart';
 
 /// Allow to encrypt and decrypt messages using AES
 class AESEncrypter extends Encryptor with Logging {
-  /// Create a new AES instance with the given [aesKey].
-  AESEncrypter(String aesKey)
-      : assert(aesKey.length >= 30, 'Key too short'),
-        assert(aesKey.contains('-:-'), 'Expect local/remote key pair') {
-    final parts = aesKey.split('-:-');
-    final lengths = parts.map((e) => e.length).toList();
+  /// Create a new AES instance with the given [secret].
+  factory AESEncrypter(String secret) =>
+      AESEncrypter._withKey(keyFromSecret(secret));
 
-    final keyHash = Hash.hmacSha256(aesKey, 'aesKey:$lengths');
+  AESEncrypter._withKey(Key key) : super(AES(key));
 
-    final key = Key.fromUtf8(keyHash.substring(0, 32));
+  static Key keyFromSecret(String secret) {
+    final parts = secret.split('-:-');
+    final lengths = parts[0].length + parts[1].length;
 
-    _encrypter = Encrypter(AES(key));
+    final charSum = secret.codeUnits.reduce((a, b) => a + b);
+
+    final keyHash = Hash.hmacSha256(secret, 'aesKey:$lengths:$charSum');
+    final key = keyHash.split('')..shuffle(Random(charSum));
+
+    return Key.fromUtf8(key.take(32).join());
   }
+
 
   final iv = IV.fromLength(16);
 
-  /// The encrypter used to encrypt and decrypt messages
-  late final Encrypter _encrypter;
-
   /// Encrypt a message
-  String? encrypt(String message) {
-    final log = functionLog('encrypt');
-
-    // TODO(Marc-R2): 200 is valid for ASCII. Unicode characters may be longer.
-    if (message.length > 200) {
-      log.warn(title: 'Message is too long to be encrypted');
-      return null;
-    }
-
-    try {
-      _updateLastUsed();
-      return _encrypter.encrypt(message, iv: iv).base64;
-    } catch (e) {
-      log.error(title: 'Error while encrypting message', message: '$e');
-      return null;
-    }
+  @override
+  String encrypt({required String data, Log? context}) {
+    final log = functionStart('encrypt', context);
+    return useEncrypter((e) => e.encrypt(data, iv: iv).base64, log);
   }
 
   /// Decrypt a message
-  String? decrypt(String message) {
-    final log = functionLog('decrypt');
-
-    try {
-      _updateLastUsed();
-      return _encrypter.decrypt64(message, iv: iv);
-    } catch (e) {
-      log.error(title: 'Error while decrypting message', message: '$e');
-      return null;
-    }
+  @override
+  String decrypt({required String data, Log? context}) {
+    final log = functionStart('decrypt', context);
+    return useEncrypter((e) => e.decrypt64(data, iv: iv), log);
   }
 }

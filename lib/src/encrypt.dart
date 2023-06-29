@@ -6,24 +6,31 @@ part of '../encrypt.dart';
 ///
 /// All other methods are used to by theses methods.
 class Encrypt with Logging {
-  /// [RSAEncryptionHandler] instance to perform RSA encryption
+  /// [RSAHandler] instance to perform RSA encryption
   ///
   /// A random RSA key pair is generated on the first use.
-  static final RSAEncryptionHandler rsa = RSAEncryptionHandler();
+  static final RSAHandler rsa = RSAHandler();
 
+  /// [ECCHandler] instance to perform ECC encryption
+  ///
+  /// A random ECC key pair is generated on the first use.
+  static final ECCHandler ecc = ECCHandler();
+
+  /// [AESHandler] instance to perform AES encryption
+  ///
+  /// The symmetric key have to be provided on each operation call.
   static final AESHandler aes = AESHandler();
 
-  /// The maximum length of a single message that can be encrypted automatically
-  static int get maxLen => rsa.maxLen; // min(rsa.maxLen, aes.maxLen);
+  /// RSA PublicKey of the session
+  static String get rsaPublicKey => rsa.publicKey;
 
-  /// PublicKey of the session
-  static String get publicKey => rsa.publicKey;
+  /// ECC PublicKey of the session
+  static String get eccPublicKey => ecc.publicKey;
 
   /// Encrypt given [data] using the
   /// encryption method specified in [encryption].
   ///
-  /// The [data] will be split into chunks of [maxLen] characters
-  /// to be encrypted individually.
+  /// The [data] will be split into chunks when it is (too) long.
   ///
   /// If you use RSA the [key] should be the public key of the receiver.
   ///
@@ -34,13 +41,11 @@ class Encrypt with Logging {
   static List<String>? encrypt({
     required String data,
     String key = '',
-    EncryptionType encryption = EncryptionType.rsa,
+    EncryptionType encryption = EncryptionType.ecc,
   }) {
-    // Split the data into equally sized chunks with a max length of [maxLen]
-    final chunks = splitIntoBlocks(data);
+    final chunks = splitIntoBlocks(data, encryption);
     final encryptedChunks = <String>[];
 
-    // Iterate over each chunk and encrypt it
     for (final chunk in chunks) {
       final encryptedChunk = encryptRaw(
         plainText: chunk,
@@ -48,21 +53,11 @@ class Encrypt with Logging {
         encryption: encryption,
       );
 
-      // If encryptRaw returns null, return null
       if (encryptedChunk == null) return null;
       encryptedChunks.add(encryptedChunk);
     }
 
-    // Generate a hash of the original chunks
-    final hash = blockHash(chunks);
-    // If blockHash returns null, return null
-    if (hash == null) return null;
-
-    // Add the hash to the end of the list of encrypted chunks
-    encryptedChunks.add(hash);
-
-    // Return the list of encrypted chunks
-    return encryptedChunks;
+    return encryptedChunks..add(blockHash(chunks));
   }
 
   /// Decrypt given chunks of [data] using the
@@ -78,12 +73,10 @@ class Encrypt with Logging {
   static String? decrypt({
     required List<String> data,
     String key = '',
-    EncryptionType encryption = EncryptionType.rsa,
+    EncryptionType encryption = EncryptionType.ecc,
   }) {
-    // Extract the hash value from the end of the data list
     final hash = data.last;
 
-    // Check if the hash value is available (starts with the hashKey prefix)
     if (!hash.startsWith(hashKey)) {
       Message.warning(
         title: 'Invalid hash',
@@ -94,12 +87,9 @@ class Encrypt with Logging {
       return null;
     }
 
-    // Initialize a list to store the decrypted chunks
     final decryptedChunks = <String>[];
 
-    // Decrypt each chunk of data in the list
     for (final chunk in data) {
-      // Skip the hash value
       if (chunk == hash) continue;
 
       final decryptedChunk = decryptRaw(
@@ -108,72 +98,46 @@ class Encrypt with Logging {
         encryption: encryption,
       );
 
-      // Return null if any chunk fails to decrypt
       if (decryptedChunk == null) return null;
 
-      // Add the decrypted chunk to the list
       decryptedChunks.add(decryptedChunk);
     }
 
-    // Join the decrypted chunks into a single string
     final decrypted = decryptedChunks.join();
 
-    // Check if the hash value of the decrypted data matches
-    // the original hash value
     if (blockHash(decryptedChunks) != hash) return null;
 
-    // Return the decrypted data if the hash values match
     return decrypted;
   }
 
-  /// Splits a given [plainText] into chunks of [maxLen] characters.
-  static List<String> splitIntoBlocks(String plainText) {
-    // Split the plainText string into a list of strings,
-    // each of which has a max length of [maxLen]
-    // and is separated by a newline character.
+  /// Splits a given [plainText] into chunks
+  @TestGen()
+  static List<String> splitIntoBlocks(String plainText, EncryptionType type) {
+    final maxLen = type.maxLength ?? (plainText.length > 8192 ? 8192 : 1024);
+
     final blocks = plainText.splitMapJoin(
-      // Use a regular expression to match chunks of [maxLen] characters
       RegExp('.{1,$maxLen}'),
-      // For each match, return the matched string followed
-      // by a newline character
       onMatch: (m) => '${m.group(0)}\n',
-      // For each non-match, return the non-match as-is
       onNonMatch: (m) => m,
     );
 
-    // Split the blocks string into a list of strings using
-    // the newline character as the delimiter
-    final blockList = blocks.split('\n')
-      // Remove any empty strings from the list
+    return blocks.split('\n')
       ..removeWhere((element) => element.isEmpty);
-
-    // Return the list of blocks
-    return blockList;
   }
 
   /// Specifies the start of a hash-chunk
   static const hashKey = '---hash---';
 
   /// Creates the hash of given [chunks].
-  static String? blockHash(List<String> chunks) {
-    try {
-      // Remove all blocks starting with [hashKey]
-      chunks.removeWhere((block) => block.startsWith(hashKey));
+  static String blockHash(List<String> chunks) {
+    chunks.removeWhere((block) => block.startsWith(hashKey));
 
-      final message = chunks.join('-');
-      final blockCount = chunks.length;
-      final textLength = message.length;
-      final mac = '$textLength-$blockCount-${textLength % blockCount}';
+    final message = chunks.join('-');
+    final blockCount = chunks.length;
+    final textLength = message.length;
+    final mac = '$textLength-$blockCount-${textLength % blockCount}';
 
-      return '$hashKey${Hash.hmacSha512(message, mac)}';
-    } catch (e, trace) {
-      Message.error(
-        title: 'Failed to hash data',
-        text: '$e',
-        stackTrace: trace,
-      );
-      return null;
-    }
+    return '$hashKey${Hash.hmacSha512(message, mac)}';
   }
 
   /// Encrypt given [plainText] using the
@@ -196,18 +160,22 @@ class Encrypt with Logging {
         return encryptAes(plainText, key);
       case EncryptionType.rsa:
         return encryptRsa(plainText, key);
+      case EncryptionType.ecc:
+        return encryptEcc(plainText, key);
     }
   }
 
   /// Encrypt given [plainText] using AES.
-  static String? encryptAes(String plainText, String key) {
-    return aes.encrypt(data: plainText, aesKey: key);
-  }
+  static String? encryptAes(String plainText, String key) =>
+      aes.encrypt(data: plainText, key: key);
 
   /// Encrypt given [plainText] using RSA.
-  static String? encryptRsa(String plainText, String key) {
-    return rsa.encrypt(data: plainText, publicKey: key);
-  }
+  static String? encryptRsa(String plainText, String key) =>
+      rsa.encrypt(data: plainText, key: key);
+
+  /// Encrypt given [plainText] using ECC.
+  static String? encryptEcc(String plainText, String key) =>
+      ecc.encrypt(data: plainText, key: key);
 
   /// Decrypt given [encryptedText] using the
   /// encryption method specified in [encryption].
@@ -224,16 +192,20 @@ class Encrypt with Logging {
         return decryptAes(encryptedText, key);
       case EncryptionType.rsa:
         return decryptRsa(encryptedText);
+      case EncryptionType.ecc:
+        return decryptEcc(encryptedText);
     }
   }
 
   /// Decrypt given [encryptedText] using AES.
-  static String? decryptAes(String encryptedText, String key) {
-    return aes.decrypt(data: encryptedText, aesKey: key);
-  }
+  static String? decryptAes(String encryptedText, String key) =>
+      aes.decrypt(data: encryptedText, key: key);
 
   /// Decrypt given [encryptedText] using RSA.
-  static String? decryptRsa(String encryptedText) {
-    return rsa.decrypt(data: encryptedText);
-  }
+  static String? decryptRsa(String encryptedText) =>
+      rsa.decrypt(data: encryptedText, key: '');
+
+  /// Decrypt given [encryptedText] using ECC.
+  static String? decryptEcc(String encryptedText) =>
+      ecc.decrypt(data: encryptedText, key: eccPublicKey);
 }

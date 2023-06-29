@@ -1,25 +1,35 @@
 name: crypt
 description: A starting point for Dart libraries or applications.
-version: 0.0.1
+version: 0.0.5
 # repository: https://github.com/my_org/my_repo
 
 publish_to: 'none'
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 dependencies:
   crypto: ^3.0.2
+  elliptic: ^0.3.8
   encrypt: ^5.0.1
+  eosdart_ecc: ^0.4.4
   log_message:
     git:
       url: https://github.com/Marc-R2/logger_dart.git
   pointycastle: 3.6.2
+  test_builder_annotation:
+    git:
+      url: https://github.com/Marc-R2/test_builder.git
+      path: packages/test_builder_annotation
 
 dev_dependencies:
   mutation_test:
     git:
       url: https://github.com/domohuhn/mutation-test.git
   test: ^1.22.1
+  test_builder:
+    git:
+      url: https://github.com/Marc-R2/test_builder.git
+      path: packages/test_builder
   test_process: ^2.0.3
   very_good_analysis: 3.1.0
