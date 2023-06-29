@@ -13,7 +13,7 @@ import 'package:elliptic/elliptic.dart' as elliptic;
 import 'package:encrypt/encrypt.dart';
 import 'package:log_message/logger.dart';
 import 'package:pointycastle/api.dart' as pc;
-import 'package:pointycastle/pointycastle.dart';
+import 'package:pointycastle/pointycastle.dart' hide Algorithm;
 import 'package:test_builder_annotation/test_builder_annotation.dart';
 
 export 'src/file_hash.dart';

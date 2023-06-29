@@ -4,32 +4,18 @@ part of '../../encrypt.dart';
 class ECCEncryptor extends Encryptor with Logging {
   factory ECCEncryptor(String publicKey, ECCDecryptor session) {
     final key = elliptic.PublicKey.fromHex(session.curve, publicKey);
-    return ECCEncryptor.fromSecret(session.computeSecret(key));
+    return ECCEncryptor._fromKey(keyFromSecret(session.computeSecret(key)));
   }
 
-  ECCEncryptor.fromSecret(String secret) : assert(secret.length == 132) {
+  ECCEncryptor._fromKey(Key key) : super(AES(key));
+
+  static Key keyFromSecret(String secret) {
     final charUnitsSum = secret.codeUnits.reduce((a, b) => a + b);
     final key = (secret.split('')..shuffle(Random(charUnitsSum))).take(32);
-    _encrypter = Encrypter(AES(Key.fromUtf8(key.join())));
+    return Key.fromUtf8(key.join());
   }
-
-  late final Encrypter _encrypter;
 
   final iv = IV.fromLength(16);
-
-  @TestGen.exclude()
-  String useEncrypter(String Function(Encrypter e) f, Log? context) {
-    final log = functionStart('useEncrypter', context);
-    try {
-      _updateLastUsed();
-      return f(_encrypter);
-    } catch (e) {
-      throw log.exception(
-        title: 'Error while using encrypter',
-        message: '$e',
-      );
-    }
-  }
 
   @override
   String decrypt({required String data, required Log? context}) {

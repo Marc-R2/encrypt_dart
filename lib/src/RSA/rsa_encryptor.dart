@@ -3,22 +3,17 @@ part of '../../encrypt.dart';
 /// Allow to encrypt messages using a RSA public key
 class RSAEncryptor extends Encryptor with Logging {
   /// Constructor for RSAEncryptor.
-  ///
-  /// Initializes the [encrypter] field with the provided [publicKey] by
-  /// first parsing the key using RSAKeyParser and then initializing the
-  /// [encrypter] with the parsed key.
-  RSAEncryptor(String publicKey) {
+  factory RSAEncryptor(String publicKey) {
     final key = RSAKeyParser().parse(_wrapKeyAsPublicKey(publicKey));
-    encrypter = Encrypter(RSA(publicKey: key as RSAPublicKey));
+    return RSAEncryptor.fromKey(key as RSAPublicKey, null);
   }
 
   /// Constructor for the parent inheriting the encryption functions
-  RSAEncryptor._parent();
-
-  /// The encrypter used to encrypt messages
-  late final Encrypter encrypter;
+  RSAEncryptor.fromKey(RSAPublicKey? publicKey, RSAPrivateKey? privateKey)
+      : super(RSA(publicKey: publicKey, privateKey: privateKey));
 
   /// Encrypt a message
+  @override
   String encrypt({required String data, Log? context}) {
     final log = functionLog('encrypt');
 
@@ -27,15 +22,7 @@ class RSAEncryptor extends Encryptor with Logging {
       throw log.exception(title: 'Message is too long to be encrypted');
     }
 
-    try {
-      _updateLastUsed();
-      return encrypter.encrypt(data).base64;
-    } catch (e) {
-      throw log.exception(
-        title: 'Error while encrypting message',
-        message: '$e',
-      );
-    }
+    return useEncrypter((e) => e.encrypt(data).base64, context);
   }
 
   /// Enode the given [publicKey] to PEM format using the PKCS#8 standard.

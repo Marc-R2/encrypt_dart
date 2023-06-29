@@ -1,6 +1,12 @@
 part of '../../encrypt.dart';
 
-abstract class Encryptor {
+abstract class Encryptor with Logging {
+  Encryptor(this._algorithm);
+
+  final Algorithm _algorithm;
+
+  late final _encrypter = Encrypter(_algorithm);
+
   /// When the instance was last used
   DateTime _lastUsed = DateTime.now();
 
@@ -18,4 +24,17 @@ abstract class Encryptor {
   String encrypt({required String data, required Log? context});
 
   String decrypt({required String data, required Log? context});
+
+  String useEncrypter(String Function(Encrypter e) f, Log? context) {
+    final log = functionStart('useEncrypter', context);
+    try {
+      _updateLastUsed();
+      return f(_encrypter);
+    } catch (e) {
+      throw log.exception(
+        title: 'Error while using encrypter',
+        message: '$e',
+      );
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'main_test.dart' as testGen;
+import 'main_test.dart' as test_gen;
 import 'src/AES/aes_encrypter_test.dart' as aes_encrypter;
 import 'src/AES/aes_handler_test.dart' as aes_handler;
 import 'src/RSA/rsa_decryptor_test.dart' as rsa_decryptor;
@@ -12,7 +12,7 @@ import 'src/hash_test.dart' as hash;
 
 void main() {
   // TestGen
-  testGen.main();
+  test_gen.main();
 
   // Encrypt
   encrypt.main();

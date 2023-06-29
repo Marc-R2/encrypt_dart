@@ -8,7 +8,6 @@ class ECCDecryptor extends ECCEncryptor {
     final privateKey = curve.generatePrivateKey();
     final publicKey = privateKey.publicKey;
     return ECCDecryptor._(
-      secret: computeSecretHex(privateKey, publicKey),
       curve: curve,
       privateKey: privateKey,
       publicKey: publicKey,
@@ -16,12 +15,11 @@ class ECCDecryptor extends ECCEncryptor {
   }
 
   ECCDecryptor._({
-    required String secret,
     required this.curve,
     required elliptic.PrivateKey privateKey,
     required this.publicKey,
   })  : _privateKey = privateKey,
-        super.fromSecret(secret);
+        super._fromKey(Key.fromUtf8(''));
 
   final elliptic.Curve curve;
 

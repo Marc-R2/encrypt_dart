@@ -24,12 +24,12 @@ void main() {
       });
 
       test('use ecdh', () {
-        var privateAlice = ec.generatePrivateKey();
-        var publicAlice = privateAlice.publicKey;
-        var privateBob = ec.generatePrivateKey();
-        var publicBob = privateBob.publicKey;
-        var secretAlice = computeSecretHex(privateAlice, publicBob);
-        var secretBob = computeSecretHex(privateBob, publicAlice);
+        final privateAlice = ec.generatePrivateKey();
+        final publicAlice = privateAlice.publicKey;
+        final privateBob = ec.generatePrivateKey();
+        final publicBob = privateBob.publicKey;
+        final secretAlice = computeSecretHex(privateAlice, publicBob);
+        final secretBob = computeSecretHex(privateBob, publicAlice);
         print('secretA: 0x$secretAlice');
         print('secretB: 0x$secretBob');
 

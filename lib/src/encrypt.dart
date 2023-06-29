@@ -30,8 +30,7 @@ class Encrypt with Logging {
   /// Encrypt given [data] using the
   /// encryption method specified in [encryption].
   ///
-  /// The [data] will be split into chunks of [maxLen] characters
-  /// to be encrypted individually.
+  /// The [data] will be split into chunks when it is (too) long.
   ///
   /// If you use RSA the [key] should be the public key of the receiver.
   ///
@@ -123,7 +122,7 @@ class Encrypt with Logging {
     return decrypted;
   }
 
-  /// Splits a given [plainText] into chunks of [maxLen] characters.
+  /// Splits a given [plainText] into chunks
   @TestGen()
   static List<String> splitIntoBlocks(String plainText, EncryptionType type) {
     final maxLen = type.maxLength ?? (plainText.length > 8192 ? 8192 : 1024);

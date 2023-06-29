@@ -1,7 +1,9 @@
 part of '../../encrypt.dart';
 
 /// Create a new RSA key pair
-AsymmetricKeyPair generateKeyPair({int keySize = 2048}) {
+AsymmetricKeyPair<RSAPublicKey, RSAPrivateKey> generateKeyPair({
+  int keySize = 2048,
+}) {
   // Create a new secure random number generator using the Fortuna algorithm
   final rng = Random.secure();
   final seed = KeyParameter(
@@ -23,5 +25,9 @@ AsymmetricKeyPair generateKeyPair({int keySize = 2048}) {
     ..init(ParametersWithRandom(keyParams, secureRandom));
 
   // Generate the RSA key pair and return it
-  return keyGenerator.generateKeyPair();
+  final pair = keyGenerator.generateKeyPair();
+  return AsymmetricKeyPair<RSAPublicKey, RSAPrivateKey>(
+    pair.publicKey as RSAPublicKey,
+    pair.privateKey as RSAPrivateKey,
+  );
 }

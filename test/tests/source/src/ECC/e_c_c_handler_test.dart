@@ -4,7 +4,7 @@
 import 'dart:math';
 
 import 'package:crypt/encrypt.dart';
-import 'package:test/test.dart';
+import 'package:test/test.dart' show Skip;
 import 'package:test_builder/test_builder.dart';
 import '../../../../.testGen/source/src/ECC/e_c_c_handler.test_gen.dart';
 

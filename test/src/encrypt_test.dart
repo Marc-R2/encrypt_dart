@@ -42,7 +42,6 @@ Future<void> main() async {
           key: key,
           encryption: EncryptionType.aes,
         );
-        print(encrypted);
         final decrypted = Encrypt.decrypt(
           data: encrypted!,
           key: key,
