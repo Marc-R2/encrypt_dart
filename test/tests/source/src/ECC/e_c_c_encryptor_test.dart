@@ -1,6 +1,10 @@
 // This file works with test_builder
 // @MarcR2 (Marc Renken) - https://github.com/MarcR2/test_builder
 
+import 'package:crypt/encrypt.dart';
+import 'package:encrypt/encrypt.dart';
+import 'package:test/expect.dart';
+
 import '../../../../.testGen/source/src/ECC/e_c_c_encryptor.test_gen.dart';
 
 void main() {
@@ -18,5 +22,25 @@ class ECCEncryptorTest extends ECCEncryptorTestTop {
   void encryptTest() {
     // TODO: Implement tests
     test('encryptTest', () {});
+  }
+
+  @override
+  void keyFromSecretTest() {
+    final simpleSecret = 'your_secret_here' * 4;
+
+    test('Test keyFromSecret returns non-null key', () {
+      final key = ECCEncryptor.keyFromSecret(simpleSecret);
+      expect(key, isNotNull);
+    });
+
+    test('Test keyFromSecret returns Key instance', () {
+      final key = ECCEncryptor.keyFromSecret(simpleSecret);
+      expect(key, isA<Key>());
+    });
+
+    test('Test keyFromSecret returns key with correct length', () {
+      final key = ECCEncryptor.keyFromSecret(simpleSecret);
+      expect(key.bytes.length, equals(32));
+    });
   }
 }
