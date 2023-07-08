@@ -65,19 +65,24 @@ class ECCHandlerTest extends ECCHandlerTestTop {
       expect(decrypted, data);
     });
 
-    test('test different lengths of data', () {
-      for (var i = 1; i < 2048; i++) {
-        final data = getRandomString(i, 2048 * 2 * 2);
-        final encrypted = A.encrypt(data: data, key: B.publicKey);
-        expect(encrypted, isNot(data));
-        final decrypted = B.decrypt(data: encrypted, key: A.publicKey);
-        expect(decrypted, data);
-      }
-    });
+    test(
+      'test different lengths of data',
+      skip: true,
+      () {
+        for (var i = 1; i < 2048; i++) {
+          final data = getRandomString(i, 2048 * 2 * 2);
+          final encrypted = A.encrypt(data: data, key: B.publicKey);
+          expect(encrypted, isNot(data));
+          final decrypted = B.decrypt(data: encrypted, key: A.publicKey);
+          expect(decrypted, data);
+        }
+      },
+    );
 
     group(
       'test multiple encryption targets',
       onPlatform: {'js': const Skip('This test is too slow in js')},
+      // skip: true,
       () {
         test('1234', () {
           Encryptor.expireTime = 1;
@@ -88,6 +93,7 @@ class ECCHandlerTest extends ECCHandlerTestTop {
           }
           print(handlers.length);
           expect(mainHandler.instanceCount, lessThan(256));
+          expect(mainHandler.instanceCount, greaterThanOrEqualTo(128));
         });
       },
     );

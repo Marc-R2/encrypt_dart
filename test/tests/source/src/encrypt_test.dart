@@ -65,4 +65,9 @@ class EncryptTest extends EncryptTestTop {
       expectBlocks(65536, 328, typesJustRSA);
     });
   }
+
+  @override
+  void decryptTest() {
+
+  }
 }

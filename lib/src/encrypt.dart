@@ -70,6 +70,7 @@ class Encrypt with Logging {
   ///
   /// If you use no encryption, the [key] is ignored
   /// and the [data] will be converted from base64.
+  @TestGen()
   static String? decrypt({
     required List<String> data,
     String key = '',
@@ -193,7 +194,7 @@ class Encrypt with Logging {
       case EncryptionType.rsa:
         return decryptRsa(encryptedText);
       case EncryptionType.ecc:
-        return decryptEcc(encryptedText);
+        return decryptEcc(encryptedText, key);
     }
   }
 
@@ -206,6 +207,6 @@ class Encrypt with Logging {
       rsa.decrypt(data: encryptedText, key: '');
 
   /// Decrypt given [encryptedText] using ECC.
-  static String? decryptEcc(String encryptedText) =>
-      ecc.decrypt(data: encryptedText, key: eccPublicKey);
+  static String? decryptEcc(String encryptedText, String key) =>
+      ecc.decrypt(data: encryptedText, key: key);
 }
