@@ -8,12 +8,13 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart' as crypto;
+import 'package:ecdsa/ecdsa.dart';
 import 'package:elliptic/ecdh.dart';
 import 'package:elliptic/elliptic.dart' as elliptic;
 import 'package:encrypt/encrypt.dart';
 import 'package:log_message/logger.dart';
 import 'package:pointycastle/api.dart' as pc;
-import 'package:pointycastle/pointycastle.dart' hide Algorithm;
+import 'package:pointycastle/pointycastle.dart' hide Algorithm, Signature;
 import 'package:test_builder_annotation/test_builder_annotation.dart';
 
 export 'src/file_hash.dart';
