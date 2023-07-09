@@ -43,4 +43,14 @@ class ECCEncryptorTest extends ECCEncryptorTestTop {
       expect(key.bytes.length, equals(32));
     });
   }
+
+  @override
+  void constructorTest() {
+    // TODO: implement constructorTest
+  }
+
+  @override
+  void constructor_fromKeyTest() {
+    // TODO: implement constructor_fromKeyTest
+  }
 }

@@ -10,9 +10,9 @@ environment:
 
 dependencies:
   crypto: ^3.0.2
+  ecdsa: ^0.0.4
   elliptic: ^0.3.8
   encrypt: ^5.0.1
-  eosdart_ecc: ^0.4.4
   log_message:
     git:
       url: https://github.com/Marc-R2/logger_dart.git

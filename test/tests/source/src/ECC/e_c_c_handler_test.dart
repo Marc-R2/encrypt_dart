@@ -4,6 +4,8 @@
 import 'dart:math';
 
 import 'package:crypt/encrypt.dart';
+import 'package:ecdsa/ecdsa.dart';
+import 'package:elliptic/elliptic.dart';
 import 'package:test/test.dart' show Skip;
 import 'package:test_builder/test_builder.dart';
 import '../../../../.testGen/source/src/ECC/e_c_c_handler.test_gen.dart';
@@ -103,5 +105,50 @@ class ECCHandlerTest extends ECCHandlerTestTop {
   void decryptTest() {
     // TODO: Implement tests
     test('decryptTest', () {});
+  }
+
+  @override
+  void hashDataTest() {
+    // TODO: implement hashDataTest
+  }
+
+  static final privateKey = getP384().generatePrivateKey();
+
+  static final publicKey = privateKey.publicKey;
+
+  static final privateKeyHex = privateKey.toHex();
+
+  static final publicKeyHex = publicKey.toHex();
+
+  @override
+  void signDataTest() {
+    test('aaa', () {
+      final data = 'abc' * 16;
+
+      final hash = ECCHandler.hashData(data);
+      final sig = signature(privateKey, hash);
+      print(sig.toDERHex());
+      print(sig.toCompactHex());
+      print(sig.toASN1Hex());
+      final v = verify(publicKey, hash, Signature.fromDERHex(sig.toASN1Hex()));
+
+      expect(v, true);
+    });
+  }
+
+  @override
+  void verifyDataTest() {
+    test('verifyDataTest', () {
+      final data = 'abc' * 16;
+
+      final s = ECCHandler.signData(data: data, privateKey: privateKeyHex);
+      print(s);
+      final v = ECCHandler.verifyData(
+        data: data,
+        signature: s,
+        publicKey: publicKeyHex,
+      );
+      expect(v, true);
+    });
   }
 }
