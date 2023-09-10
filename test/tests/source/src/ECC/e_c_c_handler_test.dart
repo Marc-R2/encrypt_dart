@@ -16,7 +16,7 @@ void main() {
 
 class ECCHandlerTest extends ECCHandlerTestTop {
   @override
-  void publicKeyTest() {
+  void publicKeyTestGetter() {
     final handler = ECCHandler();
     test('publicKeyTest', () {
       expect(handler.publicKey, handler.session.publicKeyString);
@@ -151,4 +151,7 @@ class ECCHandlerTest extends ECCHandlerTestTop {
       expect(v, true);
     });
   }
+
+  @override
+  void signingCurveTestGetter() {}
 }

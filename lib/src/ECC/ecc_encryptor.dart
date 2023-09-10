@@ -15,7 +15,8 @@ class ECCEncryptor extends Encryptor with Logging {
     return Key.fromUtf8(key.join());
   }
 
-  final iv = IV.fromLength(16);
+  // TODO(Marc-R2): Investigate
+  final iv = IV.allZerosOfLength(16);
 
   @override
   String decrypt({required String data, required Log? context}) {
