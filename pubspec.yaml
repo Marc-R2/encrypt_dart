@@ -14,7 +14,7 @@ dependencies:
   elliptic: ^0.3.10
   encrypt:
     git:
-      url: https://github.com/leocavalcante/encrypt.git
+      url: https://github.com/Marc-R2/encrypt.git
   log_message:
     git:
       url: https://github.com/Marc-R2/logger_dart.git
