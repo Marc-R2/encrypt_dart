@@ -83,7 +83,7 @@ class Encrypt with Logging {
         title: 'Invalid hash',
         text: 'Hash is missing or invalid',
         klasse: 'Encrypt',
-        function: 'decrypt',
+        sourceFunction: 'decrypt',
       );
       return null;
     }

@@ -1,0 +1,28 @@
+# gitattributes for dart-lang/sdk repository
+
+# Treat .dart files as Dart source files
+*.dart linguist-language=Dart
+
+# Exclude the mutation-test-report directory from Git statistics
+mutation-test-report/ !freshness
+
+# Exclude mutation-test-report directory
+mutation-test-report/ linguist-vendored
+
+# Treat the pubspec.yaml file as documentation
+pubspec.yaml linguist-documentation=true
+
+# Ignore log files
+*.log linguist-vendored
+
+# Mark ZIP files as binary
+*.zip binary
+
+# Use a special diff driver for PDF files
+*.pdf diff=pdf
+
+# Disable delta compression for JPEG files
+*.jpg -delta
+
+# Mark .dart.js files as binary
+*.dart.js binary
