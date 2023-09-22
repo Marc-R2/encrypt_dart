@@ -2,7 +2,8 @@ part of '../encrypt.dart';
 
 /// Class with Static methods to hash strings
 class Hash {
-  static Uint8List toBytes(String input) => utf8.encode(input);
+  static Uint8List toBytes(String input) =>
+      Uint8List.fromList(utf8.encode(input));
 
   /// Hashes a given [bytes] with sha1 to Digest.
   static crypto.Digest sha1Dig(Uint8List bytes) => crypto.sha1.convert(bytes);
