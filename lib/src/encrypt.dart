@@ -61,19 +61,18 @@ class Encrypt with Logging {
     return encryptedChunks..add(blockHash(chunks));
   }
 
-  static List<int> encryptBinary ({
+  static List<int> encryptBinary({
     required List<int> data,
     String key = '',
     EncryptionType encryption = EncryptionType.ecc,
   }) {
     switch (encryption) {
       case EncryptionType.none:
-      // TODO(Marc-R2): Base64 encode
         return data;
       case EncryptionType.aes:
-        throw UnimplementedError();
+        return aes.encryptBinary(data: data, key: key);
       case EncryptionType.rsa:
-        throw UnimplementedError();
+        return rsa.encryptBinary(data: data, key: key);
       case EncryptionType.ecc:
         return ecc.encryptBinary(data: data, key: key);
     }
@@ -130,7 +129,7 @@ class Encrypt with Logging {
     return decrypted;
   }
 
-  static List<int> decryptBinary ({
+  static List<int> decryptBinary({
     required Uint8List data,
     String key = '',
     EncryptionType encryption = EncryptionType.ecc,
@@ -139,8 +138,9 @@ class Encrypt with Logging {
       case EncryptionType.none:
         return data;
       case EncryptionType.aes:
+        return aes.decryptBinary(data: data, key: key);
       case EncryptionType.rsa:
-        throw UnimplementedError();
+        return rsa.decryptBinary(data: data, key: key);
       case EncryptionType.ecc:
         return ecc.decryptBinary(data: data, key: key);
     }
@@ -157,8 +157,7 @@ class Encrypt with Logging {
       onNonMatch: (m) => m,
     );
 
-    return blocks.split('\n')
-      ..removeWhere((element) => element.isEmpty);
+    return blocks.split('\n')..removeWhere((element) => element.isEmpty);
   }
 
   /// Specifies the start of a hash-chunk

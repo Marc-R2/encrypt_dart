@@ -1,6 +1,8 @@
 // This file works with test_builder
 // @MarcR2 (Marc Renken) - https://github.com/MarcR2/test_builder
 
+import 'dart:typed_data';
+
 import 'package:crypt/encrypt.dart';
 import 'package:test/scaffolding.dart';
 import 'package:test_builder/test_builder.dart';
@@ -11,6 +13,11 @@ void main() {
 }
 
 class EncryptTest extends EncryptTestTop {
+  EncryptTest() {
+    encryptDecryptTest();
+    encryptDecryptBinaryTest();
+  }
+
   static const typesWithoutRSA = [
     EncryptionType.aes,
     EncryptionType.ecc,
@@ -68,7 +75,9 @@ class EncryptTest extends EncryptTestTop {
   }
 
   @override
-  void decryptTest() {}
+  void decryptTest() {
+    // TODO: implement decryptTest
+  }
 
   @override
   void blockHashTest() {
@@ -102,26 +111,30 @@ class EncryptTest extends EncryptTestTop {
 
   @override
   void encryptTest() {
-    encryptDecryptTest();
+    // TODO: implement encryptTest
   }
 
-  void encryptDecryptTest() {
+  void encryptDecryptTestPart({
+    required String groupName,
+    required String key,
+    required EncryptionType encryption,
+    Map<String, dynamic> onPlatform = const {},
+  }) {
     group(
-      'rsa',
-      onPlatform: {'js': const Skip('Take too long on js')},
+      groupName,
+      onPlatform: onPlatform,
       () {
-        final key = Encrypt.rsaPublicKey;
-
-        test('should correctly encrypt and decrypt message with rsa', () {
+        test('should be able to reconstruct message with $groupName', () {
           const message = 'This is a test message';
           final encrypted = Encrypt.encrypt(
             data: message,
             key: key,
-            encryption: EncryptionType.rsa,
+            encryption: encryption,
           );
           final decrypted = Encrypt.decrypt(
             data: encrypted!,
-            encryption: EncryptionType.rsa,
+            key: key,
+            encryption: encryption,
           );
           expect(decrypted, message);
           expect(encrypted.length, 2);
@@ -129,58 +142,98 @@ class EncryptTest extends EncryptTestTop {
 
         test('should return null on decrypting invalid message', () {
           final invalidMessage = ['This is not a valid encrypted message'];
-          final decrypted = Encrypt.decrypt(data: invalidMessage);
+          final decrypted = Encrypt.decrypt(
+            data: invalidMessage,
+            key: key,
+            encryption: encryption,
+          );
           expect(decrypted, isNull);
         });
       },
     );
+  }
 
-    group('aes', () {
-      const key = 'super strong key with -:- more than 32 characters';
+  void encryptDecryptTest() {
+    group('String', () {
+      encryptDecryptTestPart(
+        groupName: 'rsa',
+        key: Encrypt.rsaPublicKey,
+        encryption: EncryptionType.rsa,
+        onPlatform: {'js': const Skip('RSA is too slow in js')},
+      );
 
-      test('should correctly encrypt and decrypt message with aes', () {
-        const message = 'This is a test message';
-        final encrypted = Encrypt.encrypt(
-          data: message,
-          key: key,
-          encryption: EncryptionType.aes,
-        );
-        final decrypted = Encrypt.decrypt(
-          data: encrypted!,
-          key: key,
-          encryption: EncryptionType.aes,
-        );
-        expect(decrypted, message);
-        expect(encrypted.length, 2);
-      });
+      encryptDecryptTestPart(
+        groupName: 'aes',
+        key: 'super strong key with -:- more than 32 characters',
+        encryption: EncryptionType.aes,
+      );
 
-      test('should return null on decrypting invalid message', () {
-        final invalidMessage = ['This is not a valid encrypted message'];
-        final decrypted = Encrypt.decrypt(
-          data: invalidMessage,
-          encryption: EncryptionType.aes,
-        );
-        expect(decrypted, isNull);
-      });
+      encryptDecryptTestPart(
+        groupName: 'ecc',
+        key: Encrypt.eccPublicKey,
+        encryption: EncryptionType.ecc,
+      );
     });
+  }
 
-    group('ecc', () {
-      final key = Encrypt.eccPublicKey;
+  void encryptDecryptBinaryTestPart({
+    required String groupName,
+    required String key,
+    required EncryptionType encryption,
+    Map<String, dynamic> onPlatform = const {},
+  }) {
+    group(
+      groupName,
+      onPlatform: onPlatform,
+      () {
+        test('should correctly reconstruct binary with $groupName', () {
+          const message = 'This is a test message';
+          final encrypted = Encrypt.encryptBinary(
+            data: message.codeUnits,
+            key: key,
+            encryption: encryption,
+          );
+          final decrypted = Encrypt.decryptBinary(
+            data: Uint8List.fromList(encrypted),
+            key: key,
+            encryption: encryption,
+          );
+          expect(decrypted, message.codeUnits);
+        });
 
-      test('should correctly encrypt and decrypt message with ecc', () {
-        const message = 'This is a test message';
-        print(key);
-        final encrypted = Encrypt.encrypt(data: message, key: key);
-        final decrypted = Encrypt.decrypt(data: encrypted!, key: key);
-        expect(decrypted, message);
-        expect(encrypted.length, 2);
-      });
+        /* test('should return null on decrypting invalid message', () {
+          final invalidMessage = List.generate(128, (i) => i);
+          final decrypted = Encrypt.decryptBinary(
+            data: Uint8List.fromList(invalidMessage),
+            key: key,
+            encryption: encryption,
+          );
+          expect(decrypted, isNull);
+        }); */
+      },
+    );
+  }
 
-      test('should return null on decrypting invalid message', () {
-        final invalidMessage = ['This is not a valid encrypted message'];
-        final decrypted = Encrypt.decrypt(data: invalidMessage);
-        expect(decrypted, isNull);
-      });
+  void encryptDecryptBinaryTest() {
+    group('binary', () {
+      encryptDecryptBinaryTestPart(
+        groupName: 'rsa',
+        key: Encrypt.rsaPublicKey,
+        encryption: EncryptionType.rsa,
+        onPlatform: {'js': const Skip('RSA is too slow in js')},
+      );
+
+      encryptDecryptBinaryTestPart(
+        groupName: 'aes',
+        key: 'super strong key with -:- more than 32 characters',
+        encryption: EncryptionType.aes,
+      );
+
+      encryptDecryptBinaryTestPart(
+        groupName: 'ecc',
+        key: Encrypt.eccPublicKey,
+        encryption: EncryptionType.ecc,
+      );
     });
   }
 

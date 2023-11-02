@@ -26,4 +26,23 @@ class RSAHandler extends EncryptHandler<RSAEncryptor> with Logging {
   @override
   String decrypt({required String data, required String key, Log? context}) =>
       session.decrypt(data: data, context: context);
+
+  @override
+  List<int> encryptBinary({
+    required List<int> data,
+    required String key,
+    Log? context,
+  }) {
+    final log = functionStart('encryptBinary', context);
+    return getInstance(key, context: log)
+        .encryptBinary(data: data, context: log);
+  }
+
+  @override
+  List<int> decryptBinary({
+    required Uint8List data,
+    required String key,
+    Log? context,
+  }) =>
+      session.decryptBinary(data: data, context: context);
 }

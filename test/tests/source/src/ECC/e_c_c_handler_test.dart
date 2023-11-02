@@ -15,6 +15,10 @@ void main() {
 }
 
 class ECCHandlerTest extends ECCHandlerTestTop {
+  ECCHandlerTest() {
+    encryptDecryptTest();
+  }
+
   @override
   void publicKeyTestGetter() {
     final handler = ECCHandler();
@@ -47,8 +51,7 @@ class ECCHandlerTest extends ECCHandlerTestTop {
     );
   }
 
-  @override
-  void encryptTest() {
+  void encryptDecryptTest() {
     final A = ECCHandler();
     final B = ECCHandler();
     test('encryptTest same', () {
@@ -99,12 +102,6 @@ class ECCHandlerTest extends ECCHandlerTestTop {
         });
       },
     );
-  }
-
-  @override
-  void decryptTest() {
-    // TODO: Implement tests
-    test('decryptTest', () {});
   }
 
   @override

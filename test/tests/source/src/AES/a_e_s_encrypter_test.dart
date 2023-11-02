@@ -10,6 +10,10 @@ void main() {
 }
 
 class AESEncrypterTest extends AESEncrypterTestTop {
+  AESEncrypterTest() {
+    encryptDecryptTest();
+  }
+
   static const key = 'abcdefghijklmnopq-:-rstuvwxyz0123456789';
 
   @override
@@ -29,7 +33,7 @@ class AESEncrypterTest extends AESEncrypterTestTop {
 
   @override
   void encryptTest() {
-    encryptDecryptTest();
+    // TODO: Implement tests
   }
 
   @override
