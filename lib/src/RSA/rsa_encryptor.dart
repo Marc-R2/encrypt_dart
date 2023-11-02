@@ -101,6 +101,7 @@ class RSAEncryptor extends Encryptor with Logging {
   }
 
   @override
+  @TestGen()
   List<int> decryptBinary({required Uint8List data, Log? context}) {
     final log = functionStart('decryptBinary', context);
     throw log.exception(title: 'RSAEncryptor cannot decrypt messages');

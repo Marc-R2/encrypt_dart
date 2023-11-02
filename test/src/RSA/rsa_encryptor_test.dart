@@ -9,6 +9,10 @@ void main() {
   const message = 'This is a test message';
   const messageSpec = r'This is a test message with special characters: &%$#@!';
 
+  final longMessage = String.fromCharCodes(
+    List.generate(201, (_) => Random().nextInt(128)),
+  );
+
   group('RSAEncryptor', () {
     test('should correctly encrypt and decrypt message', () {
       final decryptor = RSADecryptor();
@@ -30,11 +34,19 @@ void main() {
       final publicKey = decryptor.publicKeyString;
       final encryptor = RSAEncryptor(publicKey);
 
-      final message = String.fromCharCodes(
-        List.generate(201, (_) => Random().nextInt(128)),
-      );
       expect(
-        () => encryptor.encrypt(data: message),
+        () => encryptor.encrypt(data: longMessage),
+        throwsA(isA<ErrorMessage>()),
+      );
+    });
+
+    test('should return throws on encrypting data that is too long', () {
+      final decryptor = RSADecryptor();
+      final publicKey = decryptor.publicKeyString;
+      final encryptor = RSAEncryptor(publicKey);
+
+      expect(
+        () => encryptor.encryptBinary(data: longMessage.codeUnits),
         throwsA(isA<ErrorMessage>()),
       );
     });
