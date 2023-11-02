@@ -25,8 +25,20 @@ class ECCEncryptor extends Encryptor with Logging {
   }
 
   @override
+  List<int> decryptBinary({required Uint8List data, Log? context}) {
+    final log = functionStart('decryptBinary', context);
+    return useEncrypter((e) => e.decryptBytes(Encrypted(data), iv: iv), log);
+  }
+
+  @override
   String encrypt({required String data, required Log? context}) {
     final log = functionStart('encrypt', context);
     return useEncrypter((e) => e.encrypt(data, iv: iv).base64, log);
+  }
+
+  @override
+  List<int> encryptBinary({required List<int> data, Log? context}) {
+    final log = functionStart('encryptBinary', context);
+    return useEncrypter((e) => e.encryptBytes(data, iv: iv).bytes, log);
   }
 }

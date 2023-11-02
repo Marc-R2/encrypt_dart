@@ -53,4 +53,14 @@ class ECCEncryptorTest extends ECCEncryptorTestTop {
   void constructor_fromKeyTest() {
     // TODO: implement constructor_fromKeyTest
   }
+
+  @override
+  void decryptBinaryTest() {
+    // TODO: implement decryptBinaryTest
+  }
+
+  @override
+  void encryptBinaryTest() {
+    // TODO: implement encryptBinaryTest
+  }
 }

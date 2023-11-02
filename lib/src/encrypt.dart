@@ -60,6 +60,24 @@ class Encrypt with Logging {
     return encryptedChunks..add(blockHash(chunks));
   }
 
+  static List<int> encryptBinary ({
+    required List<int> data,
+    String key = '',
+    EncryptionType encryption = EncryptionType.ecc,
+  }) {
+    switch (encryption) {
+      case EncryptionType.none:
+      // TODO(Marc-R2): Base64 encode
+        return data;
+      case EncryptionType.aes:
+        throw UnimplementedError();
+      case EncryptionType.rsa:
+        throw UnimplementedError();
+      case EncryptionType.ecc:
+        return ecc.encryptBinary(data: data, key: key);
+    }
+  }
+
   /// Decrypt given chunks of [data] using the
   /// encryption method specified in [encryption].
   ///
@@ -111,6 +129,22 @@ class Encrypt with Logging {
     return decrypted;
   }
 
+  static List<int> decryptBinary ({
+    required Uint8List data,
+    String key = '',
+    EncryptionType encryption = EncryptionType.ecc,
+  }) {
+    switch (encryption) {
+      case EncryptionType.none:
+        return data;
+      case EncryptionType.aes:
+      case EncryptionType.rsa:
+        throw UnimplementedError();
+      case EncryptionType.ecc:
+        return ecc.decryptBinary(data: data, key: key);
+    }
+  }
+
   /// Splits a given [plainText] into chunks
   @TestGen()
   static List<String> splitIntoBlocks(String plainText, EncryptionType type) {
@@ -158,25 +192,13 @@ class Encrypt with Logging {
         // TODO(Marc-R2): Base64 encode
         return plainText;
       case EncryptionType.aes:
-        return encryptAes(plainText, key);
+        return aes.encrypt(data: plainText, key: key);
       case EncryptionType.rsa:
-        return encryptRsa(plainText, key);
+        return rsa.encrypt(data: plainText, key: key);
       case EncryptionType.ecc:
-        return encryptEcc(plainText, key);
+        return ecc.encrypt(data: plainText, key: key);
     }
   }
-
-  /// Encrypt given [plainText] using AES.
-  static String? encryptAes(String plainText, String key) =>
-      aes.encrypt(data: plainText, key: key);
-
-  /// Encrypt given [plainText] using RSA.
-  static String? encryptRsa(String plainText, String key) =>
-      rsa.encrypt(data: plainText, key: key);
-
-  /// Encrypt given [plainText] using ECC.
-  static String? encryptEcc(String plainText, String key) =>
-      ecc.encrypt(data: plainText, key: key);
 
   /// Decrypt given [encryptedText] using the
   /// encryption method specified in [encryption].
@@ -190,23 +212,11 @@ class Encrypt with Logging {
         // TODO(Marc-R2): Base64 decode
         return encryptedText;
       case EncryptionType.aes:
-        return decryptAes(encryptedText, key);
+        return aes.decrypt(data: encryptedText, key: key);
       case EncryptionType.rsa:
-        return decryptRsa(encryptedText);
+        return rsa.decrypt(data: encryptedText, key: '');
       case EncryptionType.ecc:
-        return decryptEcc(encryptedText, key);
+        return ecc.decrypt(data: encryptedText, key: key);
     }
   }
-
-  /// Decrypt given [encryptedText] using AES.
-  static String? decryptAes(String encryptedText, String key) =>
-      aes.decrypt(data: encryptedText, key: key);
-
-  /// Decrypt given [encryptedText] using RSA.
-  static String? decryptRsa(String encryptedText) =>
-      rsa.decrypt(data: encryptedText, key: '');
-
-  /// Decrypt given [encryptedText] using ECC.
-  static String? decryptEcc(String encryptedText, String key) =>
-      ecc.decrypt(data: encryptedText, key: key);
 }

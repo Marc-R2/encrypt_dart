@@ -15,14 +15,25 @@ class RSAEncryptor extends Encryptor with Logging {
   /// Encrypt a message
   @override
   String encrypt({required String data, Log? context}) {
-    final log = functionLog('encrypt');
+    final log = functionStart('encrypt');
 
     // TODO(Marc-R2): 200 is valid for ASCII. Unicode characters may be longer.
     if (data.length > 200) {
       throw log.exception(title: 'Message is too long to be encrypted');
     }
 
-    return useEncrypter((e) => e.encrypt(data).base64, context);
+    return useEncrypter((e) => e.encrypt(data).base64, log);
+  }
+
+  @override
+  List<int> encryptBinary({required List<int> data, Log? context}) {
+    final log = functionStart('encryptBinary');
+
+    if (data.length > 200) {
+      throw log.exception(title: 'Message is too long to be encrypted');
+    }
+
+    return useEncrypter((e) => e.encryptBytes(data).bytes, log);
   }
 
   /// Enode the given [publicKey] to PEM format using the PKCS#8 standard.
@@ -86,6 +97,12 @@ class RSAEncryptor extends Encryptor with Logging {
   @TestGen()
   String decrypt({required String data, required Log? context}) {
     final log = functionStart('decrypt', context);
+    throw log.exception(title: 'RSAEncryptor cannot decrypt messages');
+  }
+
+  @override
+  List<int> decryptBinary({required Uint8List data, Log? context}) {
+    final log = functionStart('decryptBinary', context);
     throw log.exception(title: 'RSAEncryptor cannot decrypt messages');
   }
 }
