@@ -61,6 +61,6 @@ class ECCEncryptorTest extends ECCEncryptorTestTop {
 
   @override
   void encryptBinaryTest() {
-    // TODO: implement encryptBinaryTest
+
   }
 }

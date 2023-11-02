@@ -5,6 +5,7 @@ part of '../encrypt.dart';
 /// Usually, you use the static [encrypt] and [decrypt] methods.
 ///
 /// All other methods are used to by theses methods.
+@TestGen()
 class Encrypt with Logging {
   /// [RSAHandler] instance to perform RSA encryption
   ///

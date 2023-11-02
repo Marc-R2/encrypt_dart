@@ -1,6 +1,7 @@
 part of '../../encrypt.dart';
 
 /// Allow to encrypt and decrypt messages using AES
+@TestGen()
 class AESEncrypter extends Encryptor with Logging {
   /// Create a new AES instance with the given [secret].
   factory AESEncrypter(String secret) =>
