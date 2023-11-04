@@ -26,4 +26,10 @@ class RSADecryptor extends RSAEncryptor {
     final log = functionStart('decrypt', context);
     return useEncrypter((e) => e.decrypt64(data), log);
   }
+
+  @override
+  List<int> decryptBinary({required Uint8List data, Log? context}) {
+    final log = functionStart('decryptBinary', context);
+    return useEncrypter((e) => e.decryptBytes(Encrypted(data)), log);
+  }
 }

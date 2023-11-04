@@ -1,10 +1,57 @@
+// This file works with test_builder
+// @MarcR2 (Marc Renken) - https://github.com/MarcR2/test_builder
+
 import 'package:crypt/encrypt.dart';
-import 'package:test/test.dart';
+import 'package:test_builder/test_builder.dart';
+import '../../../../.testGen/source/src/AES/a_e_s_encrypter.test_gen.dart';
 
 void main() {
-  group('AESEncrypter', () {
-    const key = 'abcdefghijklmnopq-:-rstuvwxyz0123456789';
+  AESEncrypterTest();
+}
 
+class AESEncrypterTest extends AESEncrypterTestTop {
+  AESEncrypterTest() {
+    encryptDecryptTest();
+  }
+
+  static const key = 'abcdefghijklmnopq-:-rstuvwxyz0123456789';
+
+  @override
+  void constructorTest() {
+    // TODO: Implement tests
+  }
+
+  @override
+  void constructor_withKeyTest() {
+    // TODO: Implement tests
+  }
+
+  @override
+  void keyFromSecretTest() {
+    // TODO: Implement tests
+  }
+
+  @override
+  void encryptTest() {
+    // TODO: Implement tests
+  }
+
+  @override
+  void encryptBinaryTest() {
+    // TODO: Implement tests
+  }
+
+  @override
+  void decryptTest() {
+    // TODO: Implement tests
+  }
+
+  @override
+  void decryptBinaryTest() {
+    // TODO: Implement tests
+  }
+
+  void encryptDecryptTest() {
     test('encrypt and decrypt', () {
       final instance = AESEncrypter(key);
       final message = 'The quick brown fox jumps over the lazy dog.' * 2;
@@ -31,5 +78,5 @@ void main() {
       final decrypted = instance.decrypt(data: encrypted);
       expect(decrypted, equals(message));
     });
-  });
+  }
 }

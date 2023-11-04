@@ -23,9 +23,13 @@ abstract class Encryptor with Logging {
 
   String encrypt({required String data, required Log? context});
 
+  List<int> encryptBinary({required List<int> data, Log? context});
+
   String decrypt({required String data, required Log? context});
 
-  String useEncrypter(String Function(Encrypter e) f, Log? context) {
+  List<int> decryptBinary({required Uint8List data, Log? context});
+
+  T useEncrypter<T>(T Function(Encrypter e) f, Log? context) {
     final log = functionStart('useEncrypter', context);
     try {
       _updateLastUsed();

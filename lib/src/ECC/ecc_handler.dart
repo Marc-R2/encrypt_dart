@@ -13,17 +13,6 @@ class ECCHandler extends EncryptHandler<ECCEncryptor> with Logging {
   @TestGen.exclude()
   ECCEncryptor createInstance(String key) => ECCEncryptor(key, session);
 
-  /// Encrypt given [data] using the ECC algorithm.
-  @override
-  String encrypt({required String data, required String key, Log? context}) =>
-      getInstance(key).encrypt(data: data, context: context);
-
-  /// Decrypt given [data] using the ECC algorithm
-  /// and the private key of the session.
-  @override
-  String decrypt({required String data, required String key, Log? context}) =>
-      getInstance(key).decrypt(data: data, context: context);
-
   static elliptic.Curve get signingCurve => elliptic.getP384();
 
   static List<int> hashData(String data) {

@@ -62,10 +62,28 @@ abstract class EncryptHandler<T extends Encryptor> with Logging {
     return getInstance(key).encrypt(data: data, context: log);
   }
 
+  List<int> encryptBinary({
+    required List<int> data,
+    required String key,
+    Log? context,
+  }) {
+    final log = functionStart('encryptBinary', context);
+    return getInstance(key).encryptBinary(data: data, context: log);
+  }
+
   /// Decrypt given [data] using the RSA algorithm
   /// and the private key of the session.
   String decrypt({required String data, required String key, Log? context}) {
     final log = functionStart('decrypt', context);
     return getInstance(key).decrypt(data: data, context: log);
+  }
+
+  List<int> decryptBinary({
+    required Uint8List data,
+    required String key,
+    Log? context,
+  }) {
+    final log = functionStart('decryptBinary', context);
+    return getInstance(key).decryptBinary(data: data, context: log);
   }
 }
