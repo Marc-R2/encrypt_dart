@@ -19,7 +19,7 @@ dependencies:
   log_message:
     git:
       url: https://github.com/Marc-R2/logger_dart.git
-      ref: 9934d007
+      ref: c07d129d
   pointycastle: ^3.7.3
   test_builder_annotation:
     git:
