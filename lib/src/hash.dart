@@ -1,33 +1,17 @@
 part of '../encrypt.dart';
 
-class Hashed {
-  const Hashed({
-    required this.hashAlgo,
-    String? stringData,
-    Uint8List? byteData,
-  })  : _stringData = stringData,
-        _byteData = byteData,
-        assert(
-          stringData != null || byteData != null,
-          'Input or bytes must be provided',
-        );
-
-  const Hashed.fromBytes(this.hashAlgo, Uint8List bytes)
-      : _byteData = bytes,
-        _stringData = null;
-
-  const Hashed.fromString(this.hashAlgo, String input)
-      : _stringData = input,
-        _byteData = null;
+abstract class Hashed<T> {
+  const Hashed(this.hashAlgo, this.data);
 
   final crypto.Hash hashAlgo;
 
-  final String? _stringData;
-  final Uint8List? _byteData;
+  final T data;
 
-  Uint8List get bytes => _byteData ?? Hash.toBytes(_stringData!);
+  Uint8List convertBytes(T data);
 
-  crypto.Digest get hashDig => hashAlgo.convert(bytes);
+  Uint8List get dataBytes => convertBytes(data);
+
+  crypto.Digest get hashDig => hashAlgo.convert(dataBytes);
 
   Uint8List get hashBytes => Uint8List.fromList(hashDig.bytes);
 
@@ -36,38 +20,56 @@ class Hashed {
   String substring(int start, [int? end]) => hashString.substring(start, end);
 }
 
-class HashedHmac extends Hashed {
-  const HashedHmac({
-    required super.hashAlgo,
-    String? stringData,
-    Uint8List? byteData,
-    String? stringKey,
-    Uint8List? byteKey,
-  })  : _stringKey = stringKey,
-        _byteKey = byteKey,
-        assert(
-          stringKey != null || byteKey != null,
-          'String key or byte key must be provided',
-        ),
-        super(stringData: stringData, byteData: byteData);
+mixin ConvertDataString {
+  Uint8List convertBytes(String data) => Uint8List.fromList(utf8.encode(data));
+}
 
-  HashedHmac.fromBytes(super.hashAlgo, super.bytes, String key)
-      : _stringKey = key,
-        _byteKey = null,
-        super.fromBytes();
+mixin ConvertDataBytes {
+  Uint8List convertBytes(Uint8List data) => data;
+}
 
-  HashedHmac.fromString(super.hashAlgo, super.input, Uint8List key)
-      : _byteKey = key,
-        _stringKey = null,
-        super.fromString();
+class HashedString extends Hashed<String> with ConvertDataString {
+  const HashedString(super.hashAlgo, super.data);
 
-  final String? _stringKey;
-  final Uint8List? _byteKey;
+  HashedHmacString hmac(String key) => HashedHmacString(hashAlgo, data, key);
+}
 
-  Uint8List get key => _byteKey ?? Hash.toBytes(_stringKey!);
+class HashedBytes extends Hashed<Uint8List> with ConvertDataBytes {
+  const HashedBytes(super.hashAlgo, super.data);
+
+  HashedHmacBytes hmac(Uint8List key) => HashedHmacBytes(hashAlgo, data, key);
+}
+
+abstract class HashedHmac<T, K> extends Hashed<T> {
+  const HashedHmac(super.hashAlgo, super.data, this.key);
+
+  final K key;
+
+  Uint8List convertKey(K key);
+
+  Uint8List get keyBytes => convertKey(key);
 
   @override
-  crypto.Digest get hashDig => crypto.Hmac(hashAlgo, key).convert(bytes);
+  crypto.Digest get hashDig =>
+      crypto.Hmac(hashAlgo, keyBytes).convert(dataBytes);
+}
+
+mixin ConvertKeyString {
+  Uint8List convertKey(String key) => Uint8List.fromList(utf8.encode(key));
+}
+
+mixin ConvertKeyBytes {
+  Uint8List convertKey(Uint8List key) => key;
+}
+
+class HashedHmacString extends HashedHmac<String, String>
+    with ConvertDataString, ConvertKeyString {
+  HashedHmacString(super.hashAlgo, super.data, super.key);
+}
+
+class HashedHmacBytes extends HashedHmac<Uint8List, Uint8List>
+    with ConvertDataBytes, ConvertKeyBytes {
+  const HashedHmacBytes(super.hashAlgo, super.data, super.key);
 }
 
 /// Class with Static methods to hash strings
@@ -76,48 +78,52 @@ class Hash {
       Uint8List.fromList(utf8.encode(input));
 
   /// [Hashed] a given [input] String with sha1.
-  static Hashed sha1(String input) => Hashed.fromString(crypto.sha1, input);
+  static HashedString sha1(String input) => HashedString(crypto.sha1, input);
 
   /// [Hashed] a given [input] String with sha224.
-  static Hashed sha224(String input) => Hashed.fromString(crypto.sha224, input);
+  static HashedString sha224(String input) =>
+      HashedString(crypto.sha224, input);
 
   /// Hashes a given [input] String with sha256.
-  static Hashed sha256(String input) => Hashed.fromString(crypto.sha256, input);
+  static HashedString sha256(String input) =>
+      HashedString(crypto.sha256, input);
 
   /// [Hashed] a given [input] String with sha384.
-  static Hashed sha384(String input) => Hashed.fromString(crypto.sha384, input);
+  static HashedString sha384(String input) =>
+      HashedString(crypto.sha384, input);
 
   /// [Hashed] a given [input] String with sha512.
-  static Hashed sha512(String input) => Hashed.fromString(crypto.sha512, input);
+  static HashedString sha512(String input) =>
+      HashedString(crypto.sha512, input);
 
   /// [Hashed] a given [input] String with sha512/224.
-  static Hashed sha512_224(String input) =>
-      Hashed.fromString(crypto.sha512224, input);
+  static HashedString sha512_224(String input) =>
+      HashedString(crypto.sha512224, input);
 
   /// [Hashed] a given [input] String with sha512/256.
-  static Hashed sha512_256(String input) =>
-      Hashed.fromString(crypto.sha512256, input);
+  static HashedString sha512_256(String input) =>
+      HashedString(crypto.sha512256, input);
 
   /// [Hashed] a given [input] String with md5.
-  static Hashed md5(String input) => Hashed.fromString(crypto.md5, input);
+  static HashedString md5(String input) => HashedString(crypto.md5, input);
 
   /// [HashedHmac] a given [input] and [key] String with hmac with sha1.
-  static HashedHmac hmacSha1(String input, String key) =>
-      HashedHmac(stringData: input, stringKey: key, hashAlgo: crypto.sha1);
+  static HashedHmacString hmacSha1(String input, String key) =>
+      sha1(input).hmac(key);
 
   /// [HashedHmac] a given [input] and [key] String with hmac with sha224.
-  static HashedHmac hmacSha224(String input, String key) =>
-      HashedHmac(stringData: input, stringKey: key, hashAlgo: crypto.sha224);
+  static HashedHmacString hmacSha224(String input, String key) =>
+      sha224(input).hmac(key);
 
   /// [HashedHmac] a given [input] and [key] String with hmac with sha256.
-  static HashedHmac hmacSha256(String input, String key) =>
-      HashedHmac(stringData: input, stringKey: key, hashAlgo: crypto.sha256);
+  static HashedHmacString hmacSha256(String input, String key) =>
+      sha256(input).hmac(key);
 
   /// [HashedHmac] a given [input] and [key] String with hmac with sha384.
-  static HashedHmac hmacSha384(String input, String key) =>
-      HashedHmac(stringData: input, stringKey: key, hashAlgo: crypto.sha384);
+  static HashedHmacString hmacSha384(String input, String key) =>
+      sha384(input).hmac(key);
 
   /// [HashedHmac] a given [input] and [key] String with hmac with sha512.
-  static HashedHmac hmacSha512(String input, String key) =>
-      HashedHmac(stringData: input, stringKey: key, hashAlgo: crypto.sha512);
+  static HashedHmacString hmacSha512(String input, String key) =>
+      sha512(input).hmac(key);
 }
