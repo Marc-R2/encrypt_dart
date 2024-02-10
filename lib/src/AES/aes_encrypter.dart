@@ -16,7 +16,7 @@ class AESEncrypter extends Encryptor with Logging {
     final charSum = secret.codeUnits.reduce((a, b) => a + b);
 
     final keyHash = Hash.hmacSha256(secret, 'aesKey:$lengths:$charSum');
-    final key = keyHash.split('')..shuffle(Random(charSum));
+    final key = keyHash.hashString.split('')..shuffle(Random(charSum));
 
     return Key.fromUtf8(key.take(32).join());
   }

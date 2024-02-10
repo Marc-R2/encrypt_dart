@@ -6,7 +6,6 @@ import 'dart:math';
 import 'package:crypt/encrypt.dart';
 import 'package:ecdsa/ecdsa.dart';
 import 'package:elliptic/elliptic.dart';
-import 'package:test/test.dart' show Skip;
 import 'package:test_builder/test_builder.dart';
 import '../../../../.testGen/source/src/ECC/e_c_c_handler.test_gen.dart';
 
@@ -93,8 +92,15 @@ class ECCHandlerTest extends ECCHandlerTestTop {
           Encryptor.expireTime = 1;
           final mainHandler = ECCHandler();
           final handlers = List.generate(512, (_) => ECCHandler());
-          for (final handlerB in handlers) {
-            testEncryptDecrypt(handlerA: mainHandler, handlerB: handlerB);
+          for (final entry in handlers.asMap().entries) {
+            testEncryptDecrypt(handlerA: mainHandler, handlerB: entry.value);
+            if (entry.key < 128) {
+              expect(mainHandler.instanceCount, lessThanOrEqualTo(128));
+              expect(mainHandler.instanceCount, equals(entry.key + 1));
+            } else {
+              expect(mainHandler.instanceCount, lessThan(256));
+              expect(mainHandler.instanceCount, greaterThanOrEqualTo(128));
+            }
           }
           print(handlers.length);
           expect(mainHandler.instanceCount, lessThan(256));

@@ -5,25 +5,25 @@ void main() {
   group('Hash', () {
     group('sha1', () {
       test('Hello World', () {
-        final hash = Hash.sha1('Hello World');
+        final hash = Hash.sha1('Hello World').hashString;
         print(hash);
         expect(hash, '0a4d55a8d778e5022fab701977c5d840bbc486d0');
       });
 
       test('Hello World!', () {
-        final hash = Hash.sha1('Hello World!');
+        final hash = Hash.sha1('Hello World!').hashString;
         print(hash);
         expect(hash, '2ef7bde608ce5404e97d5f042f95f89f1c232871');
       });
 
       test('BitBot - COM', () {
-        final hash = Hash.sha1('BitBot - COM');
+        final hash = Hash.sha1('BitBot - COM').hashString;
         print(hash);
         expect(hash, '6b062511d811fd31e804c973c02ed69c202596c5');
       });
 
       test('BitBot - COM!', () {
-        final hash = Hash.sha1('BitBot - COM!');
+        final hash = Hash.sha1('BitBot - COM!').hashString;
         print(hash);
         expect(hash, '9e2777466eadb0d7cf9ff380402e7e187c91a537');
       });
@@ -31,25 +31,25 @@ void main() {
 
     group('sha224', () {
       test('Hello World', () {
-        final sha = Hash.sha224('Hello World');
+        final sha = Hash.sha224('Hello World').hashString;
         print(sha);
         expect(sha, 'c4890faffdb0105d991a461e668e276685401b02eab1ef4372795047');
       });
 
       test('Hello World!', () {
-        final sha = Hash.sha224('Hello World!');
+        final sha = Hash.sha224('Hello World!').hashString;
         print(sha);
         expect(sha, '4575bb4ec129df6380cedde6d71217fe0536f8ffc4e18bca530a7a1b');
       });
 
       test('BitBot - COM', () {
-        final sha = Hash.sha224('BitBot - COM');
+        final sha = Hash.sha224('BitBot - COM').hashString;
         print(sha);
         expect(sha, 'ce5283bf902d6d71668ebc90e98c14caf11ddb82e191dfb5f8e73b94');
       });
 
       test('BitBot - COM!', () {
-        final sha = Hash.sha224('BitBot - COM!');
+        final sha = Hash.sha224('BitBot - COM!').hashString;
         print(sha);
         expect(sha, '88a836343d87aaf4e2b39887226b0dc80aaf547871871c1e4c050742');
       });
@@ -57,7 +57,7 @@ void main() {
 
     group('sha256', () {
       test('Hello World', () {
-        final sha = Hash.sha256('Hello World');
+        final sha = Hash.sha256('Hello World').hashString;
         print(sha);
         expect(
           sha,
@@ -66,7 +66,7 @@ void main() {
       });
 
       test('Hello World!', () {
-        final sha = Hash.sha256('Hello World!');
+        final sha = Hash.sha256('Hello World!').hashString;
         print(sha);
         expect(
           sha,
@@ -75,7 +75,7 @@ void main() {
       });
 
       test('BitBot - COM', () {
-        final sha = Hash.sha256('BitBot - COM');
+        final sha = Hash.sha256('BitBot - COM').hashString;
         print(sha);
         expect(
           sha,
@@ -84,7 +84,7 @@ void main() {
       });
 
       test('BitBot - COM!', () {
-        final sha = Hash.sha256('BitBot - COM!');
+        final sha = Hash.sha256('BitBot - COM!').hashString;
         print(sha);
         expect(
           sha,
@@ -95,7 +95,7 @@ void main() {
 
     group('sha384', () {
       test('Hello World', () {
-        final sha = Hash.sha384('Hello World');
+        final sha = Hash.sha384('Hello World').hashString;
         print(sha);
         expect(
           sha,
@@ -105,7 +105,7 @@ void main() {
       });
 
       test('Hello World!', () {
-        final sha = Hash.sha384('Hello World!');
+        final sha = Hash.sha384('Hello World!').hashString;
         print(sha);
         expect(
           sha,
@@ -115,7 +115,7 @@ void main() {
       });
 
       test('BitBot - COM', () {
-        final sha = Hash.sha384('BitBot - COM');
+        final sha = Hash.sha384('BitBot - COM').hashString;
         print(sha);
         expect(
           sha,
@@ -125,7 +125,7 @@ void main() {
       });
 
       test('BitBot - COM!', () {
-        final sha = Hash.sha384('BitBot - COM!');
+        final sha = Hash.sha384('BitBot - COM!').hashString;
         print(sha);
         expect(
           sha,
@@ -137,7 +137,7 @@ void main() {
 
     group('sha512', () {
       test('Hello World', () {
-        final sha = Hash.sha512('Hello World');
+        final sha = Hash.sha512('Hello World').hashString;
         print(sha);
         expect(
           sha,
@@ -147,7 +147,7 @@ void main() {
       });
 
       test('Hello World!', () {
-        final sha = Hash.sha512('Hello World!');
+        final sha = Hash.sha512('Hello World!').hashString;
         print(sha);
         expect(
           sha,
@@ -157,7 +157,7 @@ void main() {
       });
 
       test('BitBot - COM', () {
-        final sha = Hash.sha512('BitBot - COM');
+        final sha = Hash.sha512('BitBot - COM').hashString;
         print(sha);
         expect(
           sha,
@@ -167,7 +167,7 @@ void main() {
       });
 
       test('BitBot - COM!', () {
-        final sha = Hash.sha512('BitBot - COM!');
+        final sha = Hash.sha512('BitBot - COM!').hashString;
         print(sha);
         expect(
           sha,
@@ -179,25 +179,25 @@ void main() {
 
     group('md5', () {
       test('Hello World', () {
-        final md5 = Hash.md5('Hello World');
+        final md5 = Hash.md5('Hello World').hashString;
         print(md5);
         expect(md5, 'b10a8db164e0754105b7a99be72e3fe5');
       });
 
       test('Hello World!', () {
-        final md5 = Hash.md5('Hello World!');
+        final md5 = Hash.md5('Hello World!').hashString;
         print(md5);
         expect(md5, 'ed076287532e86365e841e92bfc50d8c');
       });
 
       test('BitBot - COM', () {
-        final md5 = Hash.md5('BitBot - COM');
+        final md5 = Hash.md5('BitBot - COM').hashString;
         print(md5);
         expect(md5, '635372c9292116c1bdcb5f06033b9a4c');
       });
 
       test('BitBot - COM!', () {
-        final md5 = Hash.md5('BitBot - COM!');
+        final md5 = Hash.md5('BitBot - COM!').hashString;
         print(md5);
         expect(md5, '5a46aed3404eb117b34e70df86dcdef3');
       });
@@ -205,37 +205,37 @@ void main() {
 
     group('hmac/sha1', () {
       test('Hello World / A', () {
-        final hmac = Hash.hmacSha1('Hello World', 'A');
+        final hmac = Hash.hmacSha1('Hello World', 'A').hashString;
         print(hmac);
         expect(hmac, 'e22d9d5349192fb2ee683c13ab0ca0ec85a3f7dc');
       });
 
       test('Hello World / B', () {
-        final hmac = Hash.hmacSha1('Hello World', 'B');
+        final hmac = Hash.hmacSha1('Hello World', 'B').hashString;
         print(hmac);
         expect(hmac, '3c908b7cc9328f58ce83743a1362a2abb9a6223c');
       });
 
       test('Hello World / C', () {
-        final hmac = Hash.hmacSha1('Hello World', 'C');
+        final hmac = Hash.hmacSha1('Hello World', 'C').hashString;
         print(hmac);
         expect(hmac, 'e28f57696eef79c93cca75afedda87c208eeae2d');
       });
 
       test('Hello World! / A', () {
-        final hmac = Hash.hmacSha1('Hello World!', 'A');
+        final hmac = Hash.hmacSha1('Hello World!', 'A').hashString;
         print(hmac);
         expect(hmac, 'ea5f2362e78ead7e1abcff06ed46ce494d567ebb');
       });
 
       test('Hello World! / B', () {
-        final hmac = Hash.hmacSha1('Hello World!', 'B');
+        final hmac = Hash.hmacSha1('Hello World!', 'B').hashString;
         print(hmac);
         expect(hmac, 'cea13559b4f2254e6641d4e8fefce9a1dd508d98');
       });
 
       test('Hello World! / C', () {
-        final hmac = Hash.hmacSha1('Hello World!', 'C');
+        final hmac = Hash.hmacSha1('Hello World!', 'C').hashString;
         print(hmac);
         expect(hmac, '490c6611feff7834d948a3fd6f6a47b9ea0786df');
       });
@@ -243,7 +243,7 @@ void main() {
 
     group('hmac/sha224', () {
       test('Hello World / A', () {
-        final hmac = Hash.hmacSha224('Hello World', 'A');
+        final hmac = Hash.hmacSha224('Hello World', 'A').hashString;
         print(hmac);
         expect(
           hmac,
@@ -252,7 +252,7 @@ void main() {
       });
 
       test('Hello World / B', () {
-        final hmac = Hash.hmacSha224('Hello World', 'B');
+        final hmac = Hash.hmacSha224('Hello World', 'B').hashString;
         print(hmac);
         expect(
           hmac,
@@ -261,7 +261,7 @@ void main() {
       });
 
       test('Hello World / C', () {
-        final hmac = Hash.hmacSha224('Hello World', 'C');
+        final hmac = Hash.hmacSha224('Hello World', 'C').hashString;
         print(hmac);
         expect(
           hmac,
@@ -270,7 +270,7 @@ void main() {
       });
 
       test('Hello World! / A', () {
-        final hmac = Hash.hmacSha224('Hello World!', 'A');
+        final hmac = Hash.hmacSha224('Hello World!', 'A').hashString;
         print(hmac);
         expect(
           hmac,
@@ -279,7 +279,7 @@ void main() {
       });
 
       test('Hello World! / B', () {
-        final hmac = Hash.hmacSha224('Hello World!', 'B');
+        final hmac = Hash.hmacSha224('Hello World!', 'B').hashString;
         print(hmac);
         expect(
           hmac,
@@ -288,7 +288,7 @@ void main() {
       });
 
       test('Hello World! / C', () {
-        final hmac = Hash.hmacSha224('Hello World!', 'C');
+        final hmac = Hash.hmacSha224('Hello World!', 'C').hashString;
         print(hmac);
         expect(
           hmac,
@@ -299,7 +299,7 @@ void main() {
 
     group('hmac/sha256', () {
       test('Hello World / A', () {
-        final hmac = Hash.hmacSha256('Hello World', 'A');
+        final hmac = Hash.hmacSha256('Hello World', 'A').hashString;
         print(hmac);
         expect(
           hmac,
@@ -308,7 +308,7 @@ void main() {
       });
 
       test('Hello World / B', () {
-        final hmac = Hash.hmacSha256('Hello World', 'B');
+        final hmac = Hash.hmacSha256('Hello World', 'B').hashString;
         print(hmac);
         expect(
           hmac,
@@ -317,7 +317,7 @@ void main() {
       });
 
       test('Hello World / C', () {
-        final hmac = Hash.hmacSha256('Hello World', 'C');
+        final hmac = Hash.hmacSha256('Hello World', 'C').hashString;
         print(hmac);
         expect(
           hmac,
@@ -326,7 +326,7 @@ void main() {
       });
 
       test('Hello World! / A', () {
-        final hmac = Hash.hmacSha256('Hello World!', 'A');
+        final hmac = Hash.hmacSha256('Hello World!', 'A').hashString;
         print(hmac);
         expect(
           hmac,
@@ -335,7 +335,7 @@ void main() {
       });
 
       test('Hello World! / B', () {
-        final hmac = Hash.hmacSha256('Hello World!', 'B');
+        final hmac = Hash.hmacSha256('Hello World!', 'B').hashString;
         print(hmac);
         expect(
           hmac,
@@ -344,7 +344,7 @@ void main() {
       });
 
       test('Hello World! / C', () {
-        final hmac = Hash.hmacSha256('Hello World!', 'C');
+        final hmac = Hash.hmacSha256('Hello World!', 'C').hashString;
         print(hmac);
         expect(
           hmac,
@@ -355,7 +355,7 @@ void main() {
 
     group('hmac/sha384', () {
       test('Hello World / A', () {
-        final hmac = Hash.hmacSha384('Hello World', 'A');
+        final hmac = Hash.hmacSha384('Hello World', 'A').hashString;
         print(hmac);
         expect(
           hmac,
@@ -365,7 +365,7 @@ void main() {
       });
 
       test('Hello World / B', () {
-        final hmac = Hash.hmacSha384('Hello World', 'B');
+        final hmac = Hash.hmacSha384('Hello World', 'B').hashString;
         print(hmac);
         expect(
           hmac,
@@ -375,7 +375,7 @@ void main() {
       });
 
       test('Hello World / C', () {
-        final hmac = Hash.hmacSha384('Hello World', 'C');
+        final hmac = Hash.hmacSha384('Hello World', 'C').hashString;
         print(hmac);
         expect(
           hmac,
@@ -385,7 +385,7 @@ void main() {
       });
 
       test('Hello World! / A', () {
-        final hmac = Hash.hmacSha384('Hello World!', 'A');
+        final hmac = Hash.hmacSha384('Hello World!', 'A').hashString;
         print(hmac);
         expect(
           hmac,
@@ -395,7 +395,7 @@ void main() {
       });
 
       test('Hello World! / B', () {
-        final hmac = Hash.hmacSha384('Hello World!', 'B');
+        final hmac = Hash.hmacSha384('Hello World!', 'B').hashString;
         print(hmac);
         expect(
           hmac,
@@ -405,7 +405,7 @@ void main() {
       });
 
       test('Hello World! / C', () {
-        final hmac = Hash.hmacSha384('Hello World!', 'C');
+        final hmac = Hash.hmacSha384('Hello World!', 'C').hashString;
         print(hmac);
         expect(
           hmac,
@@ -417,7 +417,7 @@ void main() {
 
     group('hmac/sha512', () {
       test('Hello World / A', () {
-        final hmac = Hash.hmacSha512('Hello World', 'A');
+        final hmac = Hash.hmacSha512('Hello World', 'A').hashString;
         print(hmac);
         expect(
           hmac,
@@ -427,7 +427,7 @@ void main() {
       });
 
       test('Hello World / B', () {
-        final hmac = Hash.hmacSha512('Hello World', 'B');
+        final hmac = Hash.hmacSha512('Hello World', 'B').hashString;
         print(hmac);
         expect(
           hmac,
@@ -437,7 +437,7 @@ void main() {
       });
 
       test('Hello World / C', () {
-        final hmac = Hash.hmacSha512('Hello World', 'C');
+        final hmac = Hash.hmacSha512('Hello World', 'C').hashString;
         print(hmac);
         expect(
           hmac,
@@ -447,7 +447,7 @@ void main() {
       });
 
       test('Hello World! / A', () {
-        final hmac = Hash.hmacSha512('Hello World!', 'A');
+        final hmac = Hash.hmacSha512('Hello World!', 'A').hashString;
         print(hmac);
         expect(
           hmac,
@@ -457,7 +457,7 @@ void main() {
       });
 
       test('Hello World! / B', () {
-        final hmac = Hash.hmacSha512('Hello World!', 'B');
+        final hmac = Hash.hmacSha512('Hello World!', 'B').hashString;
         print(hmac);
         expect(
           hmac,
@@ -467,7 +467,7 @@ void main() {
       });
 
       test('Hello World! / C', () {
-        final hmac = Hash.hmacSha512('Hello World!', 'C');
+        final hmac = Hash.hmacSha512('Hello World!', 'C').hashString;
         print(hmac);
         expect(
           hmac,
@@ -479,7 +479,7 @@ void main() {
 
     group('sha512_224', () {
       test('Hello World', () {
-        final hash = Hash.sha512_224('Hello World');
+        final hash = Hash.sha512_224('Hello World').hashString;
         print(hash);
         expect(
           hash,
@@ -488,7 +488,7 @@ void main() {
       });
 
       test('Hello World!', () {
-        final hash = Hash.sha512_224('Hello World!');
+        final hash = Hash.sha512_224('Hello World!').hashString;
         print(hash);
         expect(
           hash,
@@ -499,7 +499,7 @@ void main() {
 
     group('sha512_256', () {
       test('Hello World', () {
-        final hash = Hash.sha512_256('Hello World');
+        final hash = Hash.sha512_256('Hello World').hashString;
         print(hash);
         expect(
           hash,
@@ -508,7 +508,7 @@ void main() {
       });
 
       test('Hello World!', () {
-        final hash = Hash.sha512_256('Hello World!');
+        final hash = Hash.sha512_256('Hello World!').hashString;
         print(hash);
         expect(
           hash,

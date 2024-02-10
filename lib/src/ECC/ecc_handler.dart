@@ -17,7 +17,7 @@ class ECCHandler extends EncryptHandler<ECCEncryptor> with Logging {
 
   static List<int> hashData(String data) {
     final charSum = data.codeUnits.reduce((a, b) => a + b);
-    return Hash.hmacSha256Dig(data, '$charSum-${data.length}').bytes;
+    return Hash.hmacSha256(data, '$charSum-${data.length}').bytes;
   }
 
   /// Sign given [data] using the ECC algorithm

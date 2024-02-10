@@ -43,77 +43,86 @@ void main() {
       });
 
       test('should correctly hash file with sha1', () async {
-        expect(await file1Hash.sha1(), Hash.sha1(file1Content));
+        expect(await file1Hash.sha1(), Hash.sha1(file1Content).hashString);
       });
 
       test('should correctly hash file with sha224', () async {
-        expect(await file1Hash.sha224(), Hash.sha224(file1Content));
+        expect(await file1Hash.sha224(), Hash.sha224(file1Content).hashString);
       });
 
       test('should correctly hash file with sha256', () async {
-        expect(await file1Hash.sha256(), Hash.sha256(file1Content));
+        expect(await file1Hash.sha256(), Hash.sha256(file1Content).hashString);
       });
 
       test('should correctly hash file with sha384', () async {
-        expect(await file1Hash.sha384(), Hash.sha384(file1Content));
+        expect(await file1Hash.sha384(), Hash.sha384(file1Content).hashString);
       });
 
       test('should correctly hash file with sha512', () async {
-        expect(await file1Hash.sha512(), Hash.sha512(file1Content));
+        expect(await file1Hash.sha512(), Hash.sha512(file1Content).hashString);
       });
 
       test('should correctly hash file with sha512_224', () async {
-        expect(await file1Hash.sha512_224(), Hash.sha512_224(file1Content));
+        expect(
+          await file1Hash.sha512_224(),
+          Hash.sha512_224(file1Content).hashString,
+        );
       });
 
       test('should correctly hash file with sha512_256', () async {
-        expect(await file1Hash.sha512_256(), Hash.sha512_256(file1Content));
+        expect(
+          await file1Hash.sha512_256(),
+          Hash.sha512_256(file1Content).hashString,
+        );
       });
 
       group('operator []', () {
         test('should correctly hash file with sha1', () async {
-          expect(await file1Hash[FileHashType.sha1], Hash.sha1(file1Content));
+          expect(
+            await file1Hash[FileHashType.sha1],
+            Hash.sha1(file1Content).hashString,
+          );
         });
 
         test('should correctly hash file with sha224', () async {
           expect(
             await file1Hash[FileHashType.sha224],
-            Hash.sha224(file1Content),
+            Hash.sha224(file1Content).hashString,
           );
         });
 
         test('should correctly hash file with sha256', () async {
           expect(
             await file1Hash[FileHashType.sha256],
-            Hash.sha256(file1Content),
+            Hash.sha256(file1Content).hashString,
           );
         });
 
         test('should correctly hash file with sha384', () async {
           expect(
             await file1Hash[FileHashType.sha384],
-            Hash.sha384(file1Content),
+            Hash.sha384(file1Content).hashString,
           );
         });
 
         test('should correctly hash file with sha512', () async {
           expect(
             await file1Hash[FileHashType.sha512],
-            Hash.sha512(file1Content),
+            Hash.sha512(file1Content).hashString,
           );
         });
 
         test('should correctly hash file with sha512_224', () async {
           expect(
             await file1Hash[FileHashType.sha512_224],
-            Hash.sha512_224(file1Content),
+            Hash.sha512_224(file1Content).hashString,
           );
         });
 
         test('should correctly hash file with sha512_256', () async {
           expect(
             await file1Hash[FileHashType.sha512_256],
-            Hash.sha512_256(file1Content),
+            Hash.sha512_256(file1Content).hashString,
           );
         });
       });
