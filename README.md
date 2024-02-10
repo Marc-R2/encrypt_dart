@@ -1,41 +1,42 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+# Crypt / Encrypt Dart
 
 [![codecov](https://codecov.io/gh/Marc-R2/encrypt_dart/branch/master/graph/badge.svg?token=YPB1NXNT7U)](https://codecov.io/gh/Marc-R2/encrypt_dart)
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## Installation
 
-## Features
+Simply make sure to add the following to your `pubspec.yaml`:
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  crypt:
+    git:
+      url: https://github.com/Marc-R2/encrypt_dart.git
 ```
 
-## Additional information
+and run `pub get` or `pub upgrade` in the same directory as your `pubspec.yaml`.
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+## Quick Start
+
+```dart
+import 'package:crypt/encrypt.dart';
+```
+
+### Hashing
+
+```dart
+final hashed = Hash.sha256('Hello, World!').hashString; // or hashBytes or hashDig
+```
+
+### Encrypting
+```dart
+final instance = AESHandler(); // or RSAHandler or ECCHandler
+final encrypted = instance.encrypt(key: '<key>', data: 'Hello, World!');
+final decrypted = instance.decrypt(encrypted);
+```
+
+### Signing (only with ECCHandler)
+```dart
+final sign = ECCHandler.signData(privateKey: '<private key>', data: 'Hello, World!');
+final verify = ECCHandler.verifyData(publicKey: '<public key>', data: 'Hello, World!', signature: sign);
+```
+
