@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart' as crypto;
+import 'package:crypt/src/hash.dart';
 import 'package:ecdsa/ecdsa.dart';
 import 'package:elliptic/ecdh.dart';
 import 'package:elliptic/elliptic.dart' as elliptic;
@@ -18,6 +18,7 @@ import 'package:pointycastle/pointycastle.dart' hide Algorithm, Signature;
 import 'package:test_builder_annotation/test_builder_annotation.dart';
 
 export 'src/file_hash.dart';
+export 'src/hash.dart';
 
 // /AES
 part 'src/AES/aes_handler.dart';
@@ -37,7 +38,6 @@ part 'src/ECC/ecc_decryptor.dart';
 // /
 part 'src/encrypt.dart';
 part 'src/encryption_type.dart';
-part 'src/hash.dart';
 
 part 'src/abstract/encrypt_handler.dart';
 part 'src/abstract/encryptor.dart';
